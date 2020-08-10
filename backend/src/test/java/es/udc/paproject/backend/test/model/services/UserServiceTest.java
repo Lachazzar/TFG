@@ -6,12 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.udc.paproject.backend.model.exceptions.DuplicateInstanceException;
-import es.udc.paproject.backend.model.exceptions.InstanceNotFoundException;
-import es.udc.paproject.backend.model.entities.User;
-import es.udc.paproject.backend.model.exceptions.IncorrectLoginException;
-import es.udc.paproject.backend.model.exceptions.IncorrectPasswordException;
-import es.udc.paproject.backend.model.services.UserService;
+import es.udc.tfgproject.backend.model.entities.User;
+import es.udc.tfgproject.backend.model.exceptions.DuplicateInstanceException;
+import es.udc.tfgproject.backend.model.exceptions.IncorrectLoginException;
+import es.udc.tfgproject.backend.model.exceptions.IncorrectPasswordException;
+import es.udc.tfgproject.backend.model.exceptions.InstanceNotFoundException;
+import es.udc.tfgproject.backend.model.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
