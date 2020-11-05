@@ -8,8 +8,8 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
     
-    <name>PA Project Backend</name>
-	<description>PA Project Backend</description>
+    <name>TFG Project Backend</name>
+	<description>TFG Project Backend</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -177,6 +177,9 @@
                                     <include>
                                         src/sql/${dataSource.createTablesScript}
                                     </include>
+                                    <include>
+                                		src/sql/${dataSource.createDataScript}
+                            		</include>
                                 </includes>
                             </fileset>
                         </configuration>

@@ -1,16 +1,18 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.restrictions;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Intolerance;
 
 @Entity
 public class IntoleranceRestriction extends Restriction {
 
     private Intolerance intolerance;
 
-    public IntoleranceRestriction(Long id, String name, String code, Severity severity, Intolerance intolerance) {
-	super(id, name, code, severity);
+    public IntoleranceRestriction(Long id, String name, String code, Intolerance intolerance) {
+	super(id, name, code);
 	this.intolerance = intolerance;
     }
 

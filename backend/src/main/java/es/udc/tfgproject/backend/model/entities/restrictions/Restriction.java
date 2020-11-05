@@ -1,4 +1,4 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.restrictions;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,13 +10,11 @@ public class Restriction {
     private Long id;
     private String name;
     private String code;
-    private Severity severity;
 
-    public Restriction(Long id, String name, String code, Severity severity) {
+    public Restriction(Long id, String name, String code) {
 	this.id = id;
 	this.name = name;
 	this.code = code;
-	this.severity = severity;
     }
 
     @Id
@@ -44,13 +42,4 @@ public class Restriction {
     public final void setCode(String code) {
 	this.code = code;
     }
-
-    public final Severity getSeverity() {
-	return severity;
-    }
-
-    public final void setSeverity(Severity severity) {
-	this.severity = severity;
-    }
-
 }

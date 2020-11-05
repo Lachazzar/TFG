@@ -1,4 +1,4 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy;
 
 import java.util.Optional;
 

@@ -1,18 +1,18 @@
 -- Indexes for primary keys have been explicitly created.
 
-DROP TABLE ComponentRestriction;
 DROP TABLE MedicamentChemicalComponent;
+DROP TABLE ChemicalComponentComponentRestriction; 
 DROP TABLE ChemicalComponentDiseaseRestriction;
 DROP TABLE ChemicalComponentAllergyRestriction;
 DROP TABLE ChemicalComponentIntoleranceRestriction;
 DROP TABLE ChemicalComponentRegularRestriction;
+DROP TABLE ComponentRestriction;
 DROP TABLE DiseaseRestriction;
 DROP TABLE AllergyRestriction;
 DROP TABLE IntoleranceRestriction;
-DROP TABLE ChemicalComponentsRestriction;
-DROP TABLE ChemicalComponent;
 DROP TABLE RegularRestriction;
 DROP TABLE CommercialMedicament;
+DROP TABLE ChemicalComponent;
 DROP TABLE Family;
 DROP TABLE Disease;
 DROP TABLE Allergy;
@@ -42,7 +42,6 @@ CREATE INDEX CommercialMedicamentIndexByName ON CommercialMedicament (name);
 CREATE TABLE Family (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	familyName VARCHAR(60) NOT NULL,
-	subfamilyName VARCHAR(60),
 	CONSTRAINT UserPK PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
@@ -91,10 +90,9 @@ CREATE TABLE Intolerance (
 ) ENGINE = InnoDB;
 
 CREATE TABLE RegularRestriction (
-	id BIGINT NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT,
 	code VARCHAR(10) NOT NULL,
 	restrictionName VARCHAR(60) NOT NULL,
-	severity TINYINT NOT NULL,
 	CONSTRAINT RegularRestrictionPK PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
@@ -102,7 +100,6 @@ CREATE TABLE DiseaseRestriction (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	code VARCHAR(10) NOT NULL,
 	restrictionName VARCHAR(60) NOT NULL,
-	severity TINYINT NOT NULL,
 	diseaseId BIGINT NOT NULL,
 	CONSTRAINT DiseaseRestrictionPK PRIMARY KEY (id),
 	CONSTRAINT DiseaseFK FOREIGN KEY (diseaseId) 
@@ -113,7 +110,6 @@ CREATE TABLE AllergyRestriction (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	code VARCHAR(10) NOT NULL,
 	restrictionName VARCHAR(60) NOT NULL,
-	severity TINYINT NOT NULL,
 	allergyId BIGINT NOT NULL,
 	CONSTRAINT AllergyRestrictionPK PRIMARY KEY (id),
 	CONSTRAINT AllergyFK FOREIGN KEY (allergyId) 
@@ -124,25 +120,27 @@ CREATE TABLE IntoleranceRestriction (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	code VARCHAR(10) NOT NULL,
 	restrictionName VARCHAR(60) NOT NULL,
-	severity TINYINT NOT NULL,
 	intoleranceId BIGINT NOT NULL,
 	CONSTRAINT IntoleranceRestrictionPK PRIMARY KEY (id),
 	CONSTRAINT IntoleranceFK FOREIGN KEY (intoleranceId) 
         REFERENCES Intolerance (id)
 ) ENGINE = InnoDB;
 
-CREATE TABLE ChemicalComponentsRestriction (
+CREATE TABLE ComponentRestriction (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	code VARCHAR(10) NOT NULL,
 	restrictionName VARCHAR(60) NOT NULL,
-	severity TINYINT NOT NULL,
-	component1Id BIGINT NOT NULL,
-	component2Id BIGINT NOT NULL,
-	CONSTRAINT ChemicalComponentsRestrictionPK PRIMARY KEY (id),
-	CONSTRAINT Component1FK FOREIGN KEY (component1Id) 
+	CONSTRAINT ChemicalComponentsRestrictionPK PRIMARY KEY (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE ChemicalComponentComponentRestriction (
+	componentId BIGINT NOT NULL,
+	componentRestrictitonId BIGINT NOT NULL,
+	CONSTRAINT ChemicalComponentComponentRestrictionPK PRIMARY KEY (componentId, componentRestrictitonId),
+	CONSTRAINT ChemicalComponentComponentRestrictionFK FOREIGN KEY (componentId) 
         REFERENCES ChemicalComponent (id),
-	CONSTRAINT Component2FK FOREIGN KEY (component2Id) 
-        REFERENCES ChemicalComponent (id)
+	CONSTRAINT ComponentRestrictionFK FOREIGN KEY (componentRestrictitonID) 
+        REFERENCES ComponentRestriction (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE ChemicalComponentRegularRestriction (

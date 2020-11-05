@@ -1,4 +1,4 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.medicamentInformation;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

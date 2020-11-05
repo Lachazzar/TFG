@@ -1,6 +1,10 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.patientInformation;
 
 import java.util.Set;
+
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Allergy;
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Disease;
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Intolerance;
 
 public class MedicalHistory {
 
@@ -8,26 +12,26 @@ public class MedicalHistory {
 	MASCULINO, FEMENINO
     };
 
-    int edad;
-    Sexo sexo;
-    boolean embarazo;
-    boolean lactancia;
-    Anticoagulated anticoagulated;
-    int glomerularFiltration;
+    private int edad;
+    private Sexo sexo;
+    private boolean embarazo;
+    private boolean lactancia;
+    private int glomerularFiltration;
+    private boolean liverFailure;
     private Set<Treatment> actualTreatments;
     private Set<Allergy> allergies;
     private Set<Disease> diseases;
     private Set<Intolerance> intolerances;
 
-    public MedicalHistory(int edad, Sexo sexo, boolean embarazo, boolean lactancia, Anticoagulated anticoagulated,
-	    int glomerularFiltration, Set<Treatment> actualTreatments, Set<Allergy> allergies, Set<Disease> diseases,
+    public MedicalHistory(int edad, Sexo sexo, boolean embarazo, boolean lactancia, int glomerularFiltration,
+	    boolean liverFailure, Set<Treatment> actualTreatments, Set<Allergy> allergies, Set<Disease> diseases,
 	    Set<Intolerance> intolerances) {
 	this.edad = edad;
 	this.sexo = sexo;
 	this.embarazo = embarazo;
 	this.lactancia = lactancia;
-	this.anticoagulated = anticoagulated;
 	this.glomerularFiltration = glomerularFiltration;
+	this.liverFailure = liverFailure;
 	this.actualTreatments = actualTreatments;
 	this.allergies = allergies;
 	this.diseases = diseases;
@@ -66,20 +70,20 @@ public class MedicalHistory {
 	this.lactancia = lactancia;
     }
 
-    public final Anticoagulated getAnticoagulated() {
-	return anticoagulated;
-    }
-
-    public final void setAnticoagulated(Anticoagulated anticoagulated) {
-	this.anticoagulated = anticoagulated;
-    }
-
     public final int getGlomerularFiltration() {
 	return glomerularFiltration;
     }
 
     public final void setGlomerularFiltration(int glomerularFiltration) {
 	this.glomerularFiltration = glomerularFiltration;
+    }
+
+    public final boolean isLiverFailure() {
+	return liverFailure;
+    }
+
+    public final void setLiverFailure(boolean liverFailure) {
+	this.liverFailure = liverFailure;
     }
 
     public final Set<Treatment> getActualTreatments() {

@@ -1,4 +1,4 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.medicamentInformation;
 
 import java.util.Set;
 
@@ -12,7 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
+import es.udc.tfgproject.backend.model.entities.restrictions.AllergyRestriction;
+import es.udc.tfgproject.backend.model.entities.restrictions.ComponentRestriction;
+import es.udc.tfgproject.backend.model.entities.restrictions.DiseaseRestriction;
+import es.udc.tfgproject.backend.model.entities.restrictions.IntoleranceRestriction;
+import es.udc.tfgproject.backend.model.entities.restrictions.Restriction;
 
 @Entity
 public class ChemicalComponent {
@@ -84,7 +89,9 @@ public class ChemicalComponent {
 	this.allergyRestrictions = allergyRestrictions;
     }
 
-    @OneToMany(mappedBy = "chemicalComponent")
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+    @JoinTable(name = "ChemicalComponentComponentRestriction", joinColumns = {
+	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "componentRestrictitonId") })
     public final Set<ComponentRestriction> getComponentRestrictions() {
 	return componentRestrictions;
     }

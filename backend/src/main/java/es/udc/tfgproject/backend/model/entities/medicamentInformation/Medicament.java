@@ -1,4 +1,4 @@
-package es.udc.tfgproject.backend.model.entities;
+package es.udc.tfgproject.backend.model.entities.medicamentInformation;
 
 import java.util.HashSet;
 import java.util.Set;
