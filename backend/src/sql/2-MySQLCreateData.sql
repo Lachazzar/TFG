@@ -229,7 +229,7 @@ INSERT INTO ChemicalComponent(componentName, familyId)
 
 
 
--- INSERT INTO MedicamentChemicalComponent(medicamentId, medicamentId)
+-- INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 --	VALUES ();
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 	VALUES (1, 1);
@@ -240,24 +240,31 @@ INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 	VALUES (4, 3);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (5, 3);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 	VALUES (5, 4);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (5, 5);
+	VALUES (6, 5);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (6, 6);
+	VALUES (7, 6);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (7, 7);
+	VALUES (8, 7);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (8, 8);
+	VALUES (9, 8);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (9, 9);
+	VALUES (10, 9);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (10, 10);
+	VALUES (11, 10);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (11, 11);
+	VALUES (12, 11);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
-	VALUES (12, 12);
-
+	VALUES (13, 12);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (14, 13);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (15, 14);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (16, 15);
 
 -- INSERT INTO Disease(diseaseName)
 --	VALUES ();
