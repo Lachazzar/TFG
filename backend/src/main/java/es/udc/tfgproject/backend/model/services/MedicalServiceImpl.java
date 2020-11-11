@@ -194,7 +194,6 @@ public class MedicalServiceImpl implements MedicalService {
 	List<Alert> genericRestrictionReport = new ArrayList<>();
 	boolean aRecetar = false;
 	String title = "Restricciones genericas";
-	String title2 = "Restricciones entre componentes químicos";
 	String genericAlert = null;
 	Alert alert = null;
 	if (comprobarRecetados) {
