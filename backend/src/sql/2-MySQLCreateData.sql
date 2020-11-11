@@ -35,8 +35,13 @@ INSERT INTO Family(familyName)
 	VALUES ("Inhibidores bomba de protones"); --14
 INSERT INTO Family(familyName)
 	VALUES ("Vitaminas"); --15
-
-
+INSERT INTO Family(familyName)
+	VALUES ("Anticolinergico"); --16
+INSERT INTO Family(familyName)
+	VALUES ("Salicilatos"); --17
+INSERT INTO Family(familyName)
+	VALUES ("Antiepiléptico"); --18
+		
 -- INSERT INTO Medicament(name)
 --	VALUES ("");
 INSERT INTO Medicament(name)
@@ -81,10 +86,6 @@ INSERT INTO Medicament(name)
 	VALUES ("Diclofenacoketropofeno");
 INSERT INTO Medicament(name)
 	VALUES ("Penicilina");
-INSERT INTO Medicament(name)
-	VALUES ("Cefalosporina");
-INSERT INTO Medicament(name)
-	VALUES ("Ertapenenos");
 INSERT INTO Medicament(name)
 	VALUES ("Ceftriaxona");
 INSERT INTO Medicament(name)
@@ -159,35 +160,31 @@ INSERT INTO CommercialMedicament(name, medicamentId)
 INSERT INTO CommercialMedicament(name, medicamentId)
 	VALUES ("Penicilina", 21);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Cefalosporina", 22);
+	VALUES ("Ceftriaxona", 23);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Ertapenenos", 23);
+	VALUES ("Cefditoreno", 24);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Ceftriaxona", 24);
+	VALUES ("Vesicare", 25);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Cefditoreno", 25);
+	VALUES ("Toviaz", 26);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Vesicare", 26);
+	VALUES ("Betmiga", 27);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Toviaz", 27);
+	VALUES ("Losec", 28);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Betmiga", 28);
+	VALUES ("Plavix", 29);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Omeprazol", 29);
+	VALUES ("VIT B12", 30);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Plavix", 30);
+	VALUES ("Aspirina", 31);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("VIT B12", 31);
+	VALUES ("Fenitoina", 32);
 INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Aspirina", 32);
-INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Fenitoina", 33);
-INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Eliquis", 34);
-INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("HeparinasBPM, 35");
-INSERT INTO CommercialMedicament(name, medicamentId)
-	VALUES ("Antiagregantes", 36);
+	VALUES ("Eliquis", 33);
+--INSERT INTO CommercialMedicament(name, medicamentId)
+--	VALUES ("HeparinasBPM, 34");
+--INSERT INTO CommercialMedicament(name, medicamentId)
+--	VALUES ("Antiagregantes", 35);
 
 
 
@@ -225,10 +222,35 @@ INSERT INTO ChemicalComponent(componentName, familyId)
 	VALUES ("Tetraciclina", 11); --15
 INSERT INTO ChemicalComponent(componentName, familyId)
 	VALUES ("Apixaban", 6); --16
-
-
-
-
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Diclofenaco sódico", 8); --17
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Indometacina sódico", 8); --18
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Diclofenacoketropofeno", 8); --19
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Ceftriaxona", 11); --20
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Penicilina", 12); --21
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Cefditoreno", 12); --22
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Solifenacina", 16); --23
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Fesoteracina", 16); --24
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Mirabegrom", 13); --25
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Omeprazol", 14); --26
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Clopridogel", 6); --27
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("VIT B12", 15); --28
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Ácido acetilsalicílico", 17); --29
+INSERT INTO ChemicalComponent(componentName, familyId)
+	VALUES ("Fenitoína sódica", 18); --30		
+		
 -- INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 --	VALUES ();
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
@@ -265,32 +287,105 @@ INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 	VALUES (15, 14);
 INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
 	VALUES (16, 15);
-
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (17, 17);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (18, 11);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (19, 18);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (20, 19);		
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (23, 20);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (21, 21);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (24, 22);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (25, 23);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (26, 24);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (27, 25);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (28, 26);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (29, 27);		
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (30, 28);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (31, 29);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (32, 30);
+INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+	VALUES (33, 16);
+		
 -- INSERT INTO Disease(diseaseName)
 --	VALUES ();
-
+INSERT INTO Disease(diseaseName)
+	VALUES ("Sindrome de Reye");--1
+		
 -- INSERT INTO Allergy(allergyName)
 --	VALUES ();
+INSERT INTO Allergy(allergyName)
+	VALUES ("Penicilina");--1
 
 -- INSERT INTO Intolerance(intoleranceName)
 --	VALUES ();
-
+INSERT INTO Intolerance(intoleranceName)
+	VALUES ("Gastritis");--1
 
 -- INSERT INTO RegularRestriction(code, restrictionName)
 --	VALUES ();
-
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("NUN","NO USO EN NIÑOS"); --1
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("NUM","NO USO EN MUJERES"); --2
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("NUH","NO USO EN HOMBRES"); --3
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("ADIRL","AJUSTE DE DOSIS INCONTINENCIA RENAL LEVE"); --4
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("ADIRG","AJUSTE DE DOSIS INCONTINENCIA RENAL GRAVE"); --5
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("ADIH","AJUSTE DE DOSIS INSUFICIENCIA HEPÁTICA"); --6
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("NUE","NO USO EMBARAZO"); --7
+INSERT INTO RegularRestriction(code, restrictionName)
+	VALUES ("NUL","NO USO EN LACTANCIA"); --8
+		
 -- INSERT INTO DiseaseRestriction(code, restrictionName, diseaseId)
 --	VALUES ();
+INSERT INTO DiseaseRestriction(code, restrictionName, diseaseId)
+	VALUES ("Sindrome de Reye","Sindrome de Reye",1);
 
 -- INSERT INTO AllergyRestriction(code, restrictionName, allergyId)
 --	VALUES ();
-
+INSERT INTO AllergyRestriction(code, restrictionName, allergyId)
+	VALUES ("Penicilina", "Penicilina", 1);
+		
 -- INSERT INTO IntoleranceRestriction(code, restrictionName, intoleranceId)
 --	VALUES ();
+INSERT INTO IntoleranceRestriction(code, restrictionName, intoleranceId)
+	VALUES ("Gastritis","Gastritis", 1);
 
 -- INSERT INTO ComponentRestriction(code, restrictionName)
 --	VALUES ();
-
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+INSERT INTO ComponentRestriction(code, restrictionName)
+	VALUES ();
+		
 -- INSERT INTO ChemicalComponentComponentRestriction(componentId, componentRestrictitonId)
 --	VALUES ();
 
