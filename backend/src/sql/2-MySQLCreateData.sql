@@ -372,19 +372,15 @@ INSERT INTO IntoleranceRestriction(code, restrictionName, intoleranceId)
 -- INSERT INTO ComponentRestriction(code, restrictionName)
 --	VALUES ();
 INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
+	VALUES ("ADIF1","Ajuste de dósis por interacción farmacológica 1");
 INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
+	VALUES ("ADIF2", "Ajuste de dósis por interacción farmacológica 2");
 INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
+	VALUES ("ADIF3", "Ajuste de dósis por interacción farmacológica 3");
 INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
+	VALUES ("ADIF4", "Ajuste de dósis por interacción farmacológica 4");
 INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ();
+	VALUES ("ADIF5","Ajuste de dósis por interacción farmacológica 5");
 		
 -- INSERT INTO ChemicalComponentComponentRestriction(componentId, componentRestrictitonId)
 --	VALUES ();
