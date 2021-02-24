@@ -4,6 +4,6 @@ import java.util.Optional;
 
 public interface IntoleranceDao {
 
-    Optional<Intolerance> findByIntoleranceName(String intoleranceName);
+    Optional<Intolerance> findByName(String name);
 
 }

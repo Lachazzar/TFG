@@ -4,6 +4,6 @@ import java.util.Optional;
 
 public interface AllergyDao {
 
-    Optional<Allergy> findByAllergyName(String allergyName);
+    Optional<Allergy> findByName(String name);
 
 }

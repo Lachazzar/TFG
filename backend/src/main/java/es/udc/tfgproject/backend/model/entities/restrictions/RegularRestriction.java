@@ -6,14 +6,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Restriction {
+public class RegularRestriction {
     private Long id;
-    private String name;
+    private String restrictionName;
     private String code;
 
-    public Restriction(Long id, String name, String code) {
+    public RegularRestriction() {
+    }
+
+    public RegularRestriction(Long id, String restrictionName, String code) {
 	this.id = id;
-	this.name = name;
+	this.restrictionName = restrictionName;
 	this.code = code;
     }
 
@@ -27,19 +30,19 @@ public class Restriction {
 	this.id = id;
     }
 
-    public final String getName() {
-	return name;
+    public String getRestrictionName() {
+	return restrictionName;
     }
 
-    public final void setName(String name) {
-	this.name = name;
+    public void setRestrictionName(String restrictionName) {
+	this.restrictionName = restrictionName;
     }
 
-    public final String getCode() {
+    public String getCode() {
 	return code;
     }
 
-    public final void setCode(String code) {
+    public void setCode(String code) {
 	this.code = code;
     }
 }

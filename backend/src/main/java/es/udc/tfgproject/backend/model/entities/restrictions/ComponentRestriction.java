@@ -11,9 +11,13 @@ import javax.persistence.ManyToMany;
 import es.udc.tfgproject.backend.model.entities.medicamentInformation.ChemicalComponent;
 
 @Entity
-public class ComponentRestriction extends Restriction {
+public class ComponentRestriction extends RegularRestriction {
 
     private Set<ChemicalComponent> components;
+
+    public ComponentRestriction() {
+
+    }
 
     public ComponentRestriction(Long id, String name, String code, Set<ChemicalComponent> components) {
 	super(id, name, code);
@@ -23,11 +27,11 @@ public class ComponentRestriction extends Restriction {
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
     @JoinTable(name = "ChemicalComponentComponentRestriction", joinColumns = {
 	    @JoinColumn(name = "componentRestrictitonId") }, inverseJoinColumns = { @JoinColumn(name = "componentId") })
-    public final Set<ChemicalComponent> getComponents() {
+    public Set<ChemicalComponent> getComponents() {
 	return components;
     }
 
-    public final void setComponents(Set<ChemicalComponent> components) {
+    public void setComponents(Set<ChemicalComponent> components) {
 	this.components = components;
     }
 }

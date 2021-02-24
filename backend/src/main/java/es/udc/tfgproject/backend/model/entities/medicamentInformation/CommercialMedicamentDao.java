@@ -6,6 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface CommercialMedicamentDao extends PagingAndSortingRepository<CommercialMedicament, Long> {
 
-    Optional<CommercialMedicament> findByName(String name);
+    Optional<CommercialMedicament> findByName(String commercialMedicamentName);
 
 }

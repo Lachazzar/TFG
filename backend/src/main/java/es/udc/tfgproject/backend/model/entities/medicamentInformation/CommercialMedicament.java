@@ -12,14 +12,14 @@ import javax.persistence.ManyToOne;
 public class CommercialMedicament {
 
     private Long id;
-    private String commercialMedicamentName;
+    private String name;
     private Medicament medicament;
 
     public CommercialMedicament() {
     }
 
-    public CommercialMedicament(String commercialMedicamentName, Medicament medicament) {
-	this.commercialMedicamentName = commercialMedicamentName;
+    public CommercialMedicament(String name, Medicament medicament) {
+	this.name = name;
 	this.medicament = medicament;
     }
 
@@ -33,12 +33,12 @@ public class CommercialMedicament {
 	this.id = id;
     }
 
-    public String getCommercialMedicamentName() {
-	return commercialMedicamentName;
+    public String getName() {
+	return name;
     }
 
-    public void setCommercialMedicamentName(String commercialMedicamentName) {
-	this.commercialMedicamentName = commercialMedicamentName;
+    public void setName(String name) {
+	this.name = name;
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

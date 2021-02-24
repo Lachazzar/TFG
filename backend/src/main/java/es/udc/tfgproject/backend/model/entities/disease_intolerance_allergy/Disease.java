@@ -7,28 +7,32 @@ import javax.persistence.Id;
 
 @Entity
 public class Disease {
-	private Long id;
-	private String diseaseName;
+    private Long id;
+    private String name;
 
-	public Disease(String diseaseName) {
-		this.diseaseName = diseaseName;
-	}
+    public Disease() {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Disease(String name) {
+	this.name = name;
+    }
 
-	public String getDiseaseName() {
-		return diseaseName;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+	return id;
+    }
 
-	public void setDiseaseName(String diseaseName) {
-		this.diseaseName = diseaseName;
-	}
+    public void setId(Long id) {
+	this.id = id;
+    }
+
+    public String getname() {
+	return name;
+    }
+
+    public void setname(String name) {
+	this.name = name;
+    }
 }

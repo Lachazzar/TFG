@@ -4,6 +4,6 @@ import java.util.Optional;
 
 public interface DiseaseDao {
 
-    Optional<Disease> findByDiseaseName(String diseaseName);
+    Optional<Disease> findByName(String name);
 
 }

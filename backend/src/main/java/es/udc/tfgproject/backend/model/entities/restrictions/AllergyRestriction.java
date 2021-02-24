@@ -7,9 +7,13 @@ import javax.persistence.OneToOne;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Allergy;
 
 @Entity
-public class AllergyRestriction extends Restriction {
+public class AllergyRestriction extends RegularRestriction {
 
     private Allergy allergy;
+
+    public AllergyRestriction() {
+
+    }
 
     public AllergyRestriction(Long id, String name, String code, Allergy allergy) {
 	super(id, name, code);
@@ -18,11 +22,11 @@ public class AllergyRestriction extends Restriction {
 
     @OneToOne
     @JoinColumn(name = "allergyId")
-    public final Allergy getAllergy() {
+    public Allergy getAllergy() {
 	return allergy;
     }
 
-    public final void setAllergy(Allergy allergy) {
+    public void setAllergy(Allergy allergy) {
 	this.allergy = allergy;
     }
 

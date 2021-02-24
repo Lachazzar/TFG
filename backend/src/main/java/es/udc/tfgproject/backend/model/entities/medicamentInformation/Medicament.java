@@ -17,20 +17,20 @@ import javax.persistence.OneToMany;
 public class Medicament {
 
     private Long id;
-    private String medicamentName;
+    private String name;
     private Set<CommercialMedicament> commercialMedicaments;
     private Set<ChemicalComponent> chemicalComponents;
 
     public Medicament() {
     }
 
-    public Medicament(String medicamentName) {
-	this.medicamentName = medicamentName;
+    public Medicament(String name) {
+	this.name = name;
 	this.setCommercialMedicaments(new HashSet<>());
     }
 
-    public Medicament(String medicamentName, Set<CommercialMedicament> commercialMedicaments) {
-	this.medicamentName = medicamentName;
+    public Medicament(String name, Set<CommercialMedicament> commercialMedicaments) {
+	this.name = name;
 	this.setCommercialMedicaments(new HashSet<>());
     }
 
@@ -44,12 +44,12 @@ public class Medicament {
 	this.id = id;
     }
 
-    public String getMedicamentName() {
-	return medicamentName;
+    public String getname() {
+	return name;
     }
 
-    public void setMedicamentName(String medicamentName) {
-	this.medicamentName = medicamentName;
+    public void setname(String name) {
+	this.name = name;
     }
 
     @OneToMany(mappedBy = "medicament")

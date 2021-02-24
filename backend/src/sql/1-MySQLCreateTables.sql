@@ -41,7 +41,7 @@ CREATE INDEX CommercialMedicamentIndexByName ON CommercialMedicament (name);
 
 CREATE TABLE Family (
 	id BIGINT NOT NULL AUTO_INCREMENT,
-	familyName VARCHAR(60) NOT NULL,
+	familyName VARCHAR(100) NOT NULL,
 	CONSTRAINT UserPK PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 

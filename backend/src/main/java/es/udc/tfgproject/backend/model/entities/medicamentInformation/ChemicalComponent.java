@@ -2,7 +2,6 @@ package es.udc.tfgproject.backend.model.entities.medicamentInformation;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,11 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import es.udc.tfgproject.backend.model.entities.restrictions.AllergyRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.ComponentRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.DiseaseRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.IntoleranceRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.Restriction;
+import es.udc.tfgproject.backend.model.entities.relationInformation.ChemicalComponentRegularRestriction;
 
 @Entity
 public class ChemicalComponent {
@@ -25,11 +20,12 @@ public class ChemicalComponent {
     private Long id;
     private String componentName;
     private Family family;
-    private Set<Restriction> restrictions;
-    private Set<AllergyRestriction> allergyRestrictions;
-    private Set<ComponentRestriction> componentRestrictions;
-    private Set<IntoleranceRestriction> intoleranceRestrictions;
-    private Set<DiseaseRestriction> diseaseRestrictions;
+    private Set<ChemicalComponentRegularRestriction> chemicalComponentRegularRestrictions;
+
+//    private Set<AllergyRestriction> allergyRestrictions;
+//    private Set<ComponentRestriction> componentRestrictions;
+//    private Set<IntoleranceRestriction> intoleranceRestrictions;
+//    private Set<DiseaseRestriction> diseaseRestrictions;
 
     public ChemicalComponent() {
     }
@@ -67,60 +63,61 @@ public class ChemicalComponent {
 	this.family = family;
     }
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
-    @JoinTable(name = "ChemicalComponentRegularRestriction", joinColumns = {
-	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "regularRestrictionId") })
-    public final Set<Restriction> getRestrictions() {
-	return restrictions;
+    @ManyToMany
+    @JoinTable(name = "ChemicalComponentRegularRestriction", joinColumns = @JoinColumn(name = "componentId"), inverseJoinColumns = @JoinColumn(name = "regularRestrictionId"))
+    public final Set<ChemicalComponentRegularRestriction> getChemicalComponentRegularRestrictions() {
+	return chemicalComponentRegularRestrictions;
     }
 
-    public final void setRestrictions(Set<Restriction> restrictions) {
-	this.restrictions = restrictions;
+    public final void setChemicalComponentRegularRestrictions(
+	    Set<ChemicalComponentRegularRestriction> chemicalComponentRegularRestrictions) {
+	this.chemicalComponentRegularRestrictions = chemicalComponentRegularRestrictions;
     }
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
-    @JoinTable(name = "ChemicalComponentAllergyRestriction", joinColumns = {
-	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "allergyRestrictionId") })
-    public final Set<AllergyRestriction> getAllergyRestrictions() {
-	return allergyRestrictions;
-    }
-
-    public final void setAllergyRestrictions(Set<AllergyRestriction> allergyRestrictions) {
-	this.allergyRestrictions = allergyRestrictions;
-    }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
-    @JoinTable(name = "ChemicalComponentComponentRestriction", joinColumns = {
-	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "componentRestrictitonId") })
-    public final Set<ComponentRestriction> getComponentRestrictions() {
-	return componentRestrictions;
-    }
-
-    public final void setComponentRestrictions(Set<ComponentRestriction> componentRestrictions) {
-	this.componentRestrictions = componentRestrictions;
-    }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
-    @JoinTable(name = "ChemicalComponentIntoleranceRestriction", joinColumns = {
-	    @JoinColumn(name = "componentId") }, inverseJoinColumns = {
-		    @JoinColumn(name = "intoleranceRestrictionId") })
-    public final Set<IntoleranceRestriction> getIntoleranceRestrictions() {
-	return intoleranceRestrictions;
-    }
-
-    public final void setIntoleranceRestrictions(Set<IntoleranceRestriction> intoleranceRestrictions) {
-	this.intoleranceRestrictions = intoleranceRestrictions;
-    }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
-    @JoinTable(name = "ChemicalComponentDiseaseRestriction", joinColumns = {
-	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "diseaseRestrictionId") })
-    public final Set<DiseaseRestriction> getDiseaseRestrictions() {
-	return diseaseRestrictions;
-    }
-
-    public final void setDiseaseRestrictions(Set<DiseaseRestriction> diseaseRestrictions) {
-	this.diseaseRestrictions = diseaseRestrictions;
-    }
+//
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+//    @JoinTable(name = "ChemicalComponentAllergyRestriction", joinColumns = {
+//	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "allergyRestrictionId") })
+//    public Set<AllergyRestriction> getAllergyRestrictions() {
+//	return allergyRestrictions;
+//    }
+//
+//    public void setAllergyRestrictions(Set<AllergyRestriction> allergyRestrictions) {
+//	this.allergyRestrictions = allergyRestrictions;
+//    }
+//
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+//    @JoinTable(name = "ChemicalComponentComponentRestriction", joinColumns = {
+//	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "componentRestrictitonId") })
+//    public Set<ComponentRestriction> getComponentRestrictions() {
+//	return componentRestrictions;
+//    }
+//
+//    public void setComponentRestrictions(Set<ComponentRestriction> componentRestrictions) {
+//	this.componentRestrictions = componentRestrictions;
+//    }
+//
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+//    @JoinTable(name = "ChemicalComponentIntoleranceRestriction", joinColumns = {
+//	    @JoinColumn(name = "componentId") }, inverseJoinColumns = {
+//		    @JoinColumn(name = "intoleranceRestrictionId") })
+//    public Set<IntoleranceRestriction> getIntoleranceRestrictions() {
+//	return intoleranceRestrictions;
+//    }
+//
+//    public void setIntoleranceRestrictions(Set<IntoleranceRestriction> intoleranceRestrictions) {
+//	this.intoleranceRestrictions = intoleranceRestrictions;
+//    }
+//
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+//    @JoinTable(name = "ChemicalComponentDiseaseRestriction", joinColumns = {
+//	    @JoinColumn(name = "componentId") }, inverseJoinColumns = { @JoinColumn(name = "diseaseRestrictionId") })
+//    public Set<DiseaseRestriction> getDiseaseRestrictions() {
+//	return diseaseRestrictions;
+//    }
+//
+//    public void setDiseaseRestrictions(Set<DiseaseRestriction> diseaseRestrictions) {
+//	this.diseaseRestrictions = diseaseRestrictions;
+//    }
 
 }

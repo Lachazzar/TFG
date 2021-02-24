@@ -7,28 +7,31 @@ import javax.persistence.Id;
 
 @Entity
 public class Intolerance {
-	private Long id;
-	private String intoleranceName;
+    private Long id;
+    private String name;
 
-	public Intolerance(String intoleranceName) {
-		this.intoleranceName = intoleranceName;
-	}
+    public Intolerance() {
+    }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
+    public Intolerance(String name) {
+	this.name = name;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+	return id;
+    }
 
-	public String getIntoleranceName() {
-		return intoleranceName;
-	}
+    public void setId(Long id) {
+	this.id = id;
+    }
 
-	public void setIntoleranceName(String intoleranceName) {
-		this.intoleranceName = intoleranceName;
-	}
+    public String getname() {
+	return name;
+    }
+
+    public void setname(String name) {
+	this.name = name;
+    }
 }

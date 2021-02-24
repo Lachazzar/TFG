@@ -7,28 +7,32 @@ import javax.persistence.Id;
 
 @Entity
 public class Allergy {
-	private Long id;
-	private String allergyName;
+    private Long id;
+    private String name;
 
-	public Allergy(String allergyName) {
-		this.allergyName = allergyName;
-	}
+    public Allergy() {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Allergy(String name) {
+	this.name = name;
+    }
 
-	public String getAllergyName() {
-		return allergyName;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+	return id;
+    }
 
-	public void setAllergyName(String allergyName) {
-		this.allergyName = allergyName;
-	}
+    public void setId(Long id) {
+	this.id = id;
+    }
+
+    public String getname() {
+	return name;
+    }
+
+    public void setname(String name) {
+	this.name = name;
+    }
 }
