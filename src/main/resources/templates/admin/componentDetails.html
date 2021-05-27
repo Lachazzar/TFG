@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<title th:text=${title}></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="div1">
+		<h1 th:text=${title}></h1>
+	</div>
+	<form action="#" th:action="@{/administracion/componentes/guardar}" th:object="${component}" method="post">
+		<div class="div1">
+			<div th:if="${err}!= null">
+				<p th:text=${err}></p>
+			</div>
+		</div>
+		<!-- OCULTOS -->
+        <input type="hidden" id="oldComponentName" name="oldComponentName" th:value="${oldComponentName}"/>
+		<div class="div2" style="float: left; width: 40%; margin: 0% 0% 0% 10%">
+			<label class="col-form-label-sm" for="nombre">Nombre</label>
+           	<input th:field="*{componentName}" th:title="componentName"
+           	class="form-control form-control-sm" 
+           	id="componentName" type="text" required autofocus>
+		</div>
+		<div style="float: left; width: 100%">
+			<div style="float: left; width: 50%">
+	       		<h2 align="center">Familia</h2>
+	    			<div class="divtable2">
+		            <table id="familyTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="family : ${families}">
+		                    	<td class="thadjusted">
+		                    		<input th:id="${family.code}" name="family" type="radio" th:value="${family.familyName}"/>
+		                    	</td>
+		                    	<td th:text="${family.familyName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>
+	       	</div>
+	     	<div style="float: left; width: 50%;">
+	       		<h2 align="center">Restricciones genéricas</h2>
+	    			<div class="divtable2">
+		            <table id="rRestrictionsTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="restriction : ${rRestrictions}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${restriction.code}" type="checkbox" name="rRestrictionsL" th:value="${restriction.code}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${restriction.restrictionName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+	       	</div>
+		</div>
+		<div style="float: left; width: 100%">
+			<div style="float: left; width: 50%;">
+	       		<h2 align="center">Incompatibilidad con enfermedades</h2>
+	    			<div class="divtable2">
+		            <table id="diseasesTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="disease : ${diseases}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${disease.code}" type="checkbox" name="diseasesL" th:value="${disease.diseaseName}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${disease.diseaseName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+	       	</div>
+	       	<div style="float: left; width: 50%;">
+	       		<h2 align="center">Incompatibilidad con alergias</h2>
+	    			<div class="divtable2">
+		            <table id="allergiesTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="allergy : ${allergies}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${allergy.code}" type="checkbox" name="allergiesL" th:value="${allergy.allergyName}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${allergy.allergyName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+	       	</div>
+		</div>
+		<div style="float: left; width: 100%">
+			<div style="float: left; width: 50%;">
+	       		<h2 align="center">Incompatibilidad con intolerancias</h2>
+	    			<div class="divtable2">
+		            <table id="intolerancesTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="intolerance : ${intolerances}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${intolerance.code}" type="checkbox" name="intolerancesL" th:value="${intolerance.intoleranceName}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${intolerance.intoleranceName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+	       	</div>
+	       	<div style="float: left; width: 50%;">
+	       		<h2 align="center">Incompatibilidad con componentes químicos</h2>
+	    			<div class="divtable2">
+		            <table id="componentsTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="component : ${components}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${component.code}" type="checkbox" name="componentsL" th:value="${component.componentName}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${component.componentName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+	       	</div>
+		</div>
+        
+		<div style="float: left; width: 100%">
+			<div class="divbutton">
+				<button type="submit" class="myButton">Guardar</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready(function() {
+	$.fn.DataTable.ext.pager.numbers_length = 5;
+	
+	var familyTable = $('#familyTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	var rRestrictionsTable = $('#rRestrictionsTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	var diseasesTable = $('#diseasesTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	var allergiesTable = $('#allergiesTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	var intolerancesTable = $('#intolerancesTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	var componentsTable = $('#componentsTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	$("form").on('submit', function(e){
+		   var $form = $(this);
+			
+		// Iterate over all checkboxes in the table
+		   familyTable.$('input[type="radio"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+		
+			// Iterate over all checkboxes in the table
+		   rRestrictionsTable.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+			
+			// Iterate over all checkboxes in the table
+		   diseasesTable.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+			
+			// Iterate over all checkboxes in the table
+		   allergiesTable.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+			
+			// Iterate over all checkboxes in the table
+		   intolerancesTable.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+			
+			// Iterate over all checkboxes in the table
+		   componentsTable.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+	});
+	
+});
+</script>
+
+ <script th:inline="javascript">
+      // <![CDATA[
+    	  
+        var familySelected = /*[[${component.family.code}]]*/;
+        var familyCode = "#"+familySelected;
+        $(familyCode).prop( "checked", true );
+        
+        var restrictions = /*[[${component.regularRestrictions}]]*/ [];
+        if (restrictions != null){
+        	for (var i = 0; i < restrictions.length; i++) {
+        		var restrictionId = "#"+restrictions[i].code;
+                $(restrictionId).prop( "checked", true );
+              }	
+        }
+        
+        var diseasesL = /*[[${component.diseases}]]*/ [];
+        if (diseasesL != null){
+        	for (var i = 0; i < diseasesL.length; i++) {
+        		var diseaseId = "#"+diseasesL[i].code;
+                $(diseaseId).prop( "checked", true );
+              }	
+        }
+        
+        var allergiesL = /*[[${component.allergies}]]*/ [];
+        if (allergiesL != null){
+        	for (var i = 0; i < allergiesL.length; i++) {
+        		var allergyId = "#"+allergiesL[i].code;
+                $(allergyId).prop( "checked", true );
+              }	
+        }
+        
+        var intolerancesL = /*[[${component.intolerances}]]*/ [];
+        if (intolerancesL != null){
+        	for (var i = 0; i < intolerancesL.length; i++) {
+        		var intoleranceId = "#"+intolerancesL[i].code;
+                $(intoleranceId).prop( "checked", true );
+              }	
+        }
+        
+        var componentsList = /*[[${component.chemicalComponents}]]*/ [];
+        if (componentsList != null){
+        	for (var i = 0; i < componentsList.length; i++) {
+        		var componentId = "#"+componentsList[i].code;
+                $(componentId).prop( "checked", true );
+              }	
+        }
+
+      // ]]>
+</script>
+
+</html>

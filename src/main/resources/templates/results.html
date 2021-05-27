@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Results</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="div1">
+		<h1>Resultados</h1>
+		
+		<div style="float: left; width: 100%">
+			<div class="divBorder" style="float: left; width: 40%;" th:if=${medicamentsBool}>
+				<h2>Medicamentos Recetados</h2>
+			
+		    	<section th:each="medicament : ${medicaments}">
+		       		<p th:text="${medicament.commercialMedicamentName}"></p>
+		       		<ul>
+		            	<li th:each="component: ${medicament.components}" th:text="${component.componentName}+ ' (' + ${component.family.familyName}+')'"></li>
+		       		</ul>
+		   		</section>
+			</div>
+			<div class="divBorder"  style="float: left; width: 40%"  th:if=${treatmentBool}>
+				<h2>Medicamento Nuevo</h2>
+			
+		    	<section>
+		       		<p th:text="${medRecet.commercialMedicamentName}"></p>
+		       		<ul>
+		            	<li th:each="component: ${medRecet.components}" th:text="${component.componentName}+ ' (' + ${component.family.familyName}+')'"></li>
+		       		</ul>
+		   		</section>
+			</div>
+		</div>
+		<div class="divBorder" style="float: left; width: 80%;">
+			<h2>Alertas</h2>
+			<div th:if=${alertsEmpty}>
+				<p>No existen incompatibilidades en el supuesto.</p>
+			</div>
+			<section th:each="alert : ${alerts}">
+			<ul>
+	       		<li th:text="${alert.message}"></li>
+		    </ul>
+			</section>
+	    </div>
+	    <div>
+	    	<form action="#" th:action="@{/medical/historyFormLoad}" th:object="${history}" method="post">
+	    		<!-- OCULTOS -->
+	    		<input type="hidden" th:field="*{actualTreatments}"/>
+				 <div style="display: none;">
+		        	<ul>
+			       		<li th:each="treatment : *{actualTreatments}">
+			       			<input type="hidden" name="meds" th:value="${treatment.commercialMedicamentName}"/>
+			       		</li>
+			       	</ul>
+		        </div>
+		        <input type="hidden" th:field="*{edad}"/>
+		        <input type="hidden" th:field="*{sexo}"/>
+		        <input type="hidden" th:field="*{embarazo}"/>
+		        <input type="hidden" th:field="*{lactancia}"/>
+		        <input type="hidden" th:field="*{glomerularFiltration}"/>
+		        <input type="hidden" th:field="*{liverFailure}"/>
+		        <div style="display: none;">
+		        	<ul>
+			       		<li th:each="allergy : *{allergies}">
+			       			<input type="hidden" name="als" th:value="${allergy.allergyName}"/>
+			       		</li>
+			       	</ul>
+		        </div>
+		        <div style="display: none;">
+		        	<ul>
+			       		<li th:each="disease : *{diseases}">
+			       			<input type="hidden" name="dis" th:value="${disease.diseaseName}"/>
+			       		</li>
+			       	</ul>
+		        </div>
+		        <div style="display: none;">
+		        	<ul>
+			       		<li th:each="intolerance : *{intolerances}">
+			       			<input type="hidden" name="ints" th:value="${intolerance.intoleranceName}"/>
+			       		</li>
+			       	</ul>
+		        </div>
+		        
+		        <div>
+	        		<a class="enlace" href="historyForm" style="margin: 0% 20% 0% 20%;"><span>Nuevo paciente</span></a>
+	        		<button type="submit" class="myButton">Repetir paciente</button>
+				</div>
+	    	</form>
+	    </div>
+	    
+	</div>
+	<br>
+	<br>
+	<br>
+</body>
+</html>

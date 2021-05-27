@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>MedicamentForm</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="div1">
+		<h1>Medicamentos</h1>
+	</div>
+	<form action="#" th:action="@{/medical/results}" th:object="${history}" method="post">
+		<!-- OCULTOS -->
+        <input type="hidden" th:field="*{edad}"/>
+        <input type="hidden" th:field="*{sexo}"/>
+        <input type="hidden" th:field="*{embarazo}"/>
+        <input type="hidden" th:field="*{lactancia}"/>
+        <input type="hidden" th:field="*{glomerularFiltration}"/>
+        <input type="hidden" th:field="*{liverFailure}"/>
+        <div style="display: none;">
+        	<ul>
+	       		<li th:each="allergy : *{allergies}">
+	       			<input type="hidden" name="als" th:value="${allergy.allergyName}"/>
+	       		</li>
+	       	</ul>
+        </div>
+        <div style="display: none;">
+        	<ul>
+	       		<li th:each="disease : *{diseases}">
+	       			<input type="hidden" name="dis" th:value="${disease.diseaseName}"/>
+	       		</li>
+	       	</ul>
+        </div>
+        <div style="display: none;">
+        	<ul>
+	       		<li th:each="intolerance : *{intolerances}">
+	       			<input type="hidden" name="ints" th:value="${intolerance.intoleranceName}"/>
+	       		</li>
+	       	</ul>
+        </div>
+        <div style="float: left; width: 100%">
+        	<div style="float: left; width: 50%;">
+        		<h2 align="center">Medicamentos actuales</h2>
+     			<div class="divtable2">
+		            <table id="medicament1Table" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="medicament : ${medicaments}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${medicament.code}" type="checkbox" name="meds" th:value="${medicament.commercialMedicamentName}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${medicament.commercialMedicamentName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+        	</div>
+        	<div style="float: left; width: 50%">
+        		<h2 align="center">Medicamento nuevo</h2>
+     			<div class="divtable2">
+		            <table id="medicament2Table" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="medicament : ${medicaments}">
+		                    	<td class="thadjusted">
+		                    		<input id="aRecetar" name="medRecet" type="radio" th:value="${medicament.commercialMedicamentName}"/>
+		                    	</td>
+		                    	<td th:text="${medicament.commercialMedicamentName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>
+        	</div>
+        </div>
+        <div>
+        	<div class="div2" style="float: left; width: 40%;">
+        		<div style="margin: 4% 0% 4% 15%">
+        			<br>
+        			<label class="container">Comprobar medicamentos ya recetados
+						<input id="compRecetados" type="checkbox" name="compRecetados"/>
+						<span class="checkmark"></span>
+					</label>
+        		</div>
+        	</div>
+	    </div>
+		<div style="float: left; width: 100%; margin: 0% 0% 5% 44%;">
+			<button type="submit" class="myButton">Finalizar</button>
+		</div>	
+	</form>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready(function() {
+	$.fn.DataTable.ext.pager.numbers_length = 5;
+	
+	var med1Table = $('#medicament1Table').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	var med2Table = $('#medicament2Table').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [13],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	$("form").on('submit', function(e){
+		   var $form = $(this);
+		   
+			// Iterate over all checkboxes in the table
+		   med1Table.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+			
+		// Iterate over all checkboxes in the table
+		   med2Table.$('input[type="radio"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+			
+	});
+	
+});
+</script>
+
+ <script th:inline="javascript">
+      // <![CDATA[
+    	  
+        var treatmentsL = /*[[${history.actualTreatments}]]*/ [];
+        if (treatmentsL != null){
+        	for (var i = 0; i < treatmentsL.length; i++) {
+        		var treatmentId = "#"+treatmentsL[i].code;
+                $(treatmentId).prop( "checked", true );
+              }	
+        }
+
+      // ]]>
+</script>
+
+
+</html>

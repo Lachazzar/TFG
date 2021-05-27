@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Home</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/home.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="row" style="float: left; width: 90%; margin: 3% 0% 0% 3%;">
+		<div class="divBorder" >
+			<h1>EasyHealth</h1>
+			<p>Este software permite al usuario detectar los posibles problemas o necesidades de ajustes de dosis de diversos fármacos simultaneamente.</p>
+			<p>Comprobaciones:</p>
+			<ul>
+				<li>Incompatibiliad con características del paciente como: sexo, edad, estado de embarazo o lactancia, intolerancias, alergias y enfermedades</li>
+				<li>Necesidad de ajuste de dosis por: Kg de peso, insuficiencia hepatica y filtrado glomerular leve o severo</li>
+				<li>Comprobaciones medicamentosas: aviso de las interacciones entre medicamentos para la posible retirada de alguno.</li>
+			</ul>
+			<br>
+			<p>¡AVISO!</p>
+			<p>Si el usuario no está especializado en el campo no tome medidas con sus medicamentos sin la supervisión de su médico.</p>
+		</div>
+	</div>
+	<div class="row" style="position: fixed; bottom: 5%; margin: 0% 0% 0% 30%">
+		<a class="enlace" href="medical/historyForm"><span>Comenzar</span></a>
+	</div>
+</body>
+</html>

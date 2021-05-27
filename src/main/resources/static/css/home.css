@@ -1,0 +1,66 @@
+html{
+	font-family: Rockwell, Quicksand, Verdana, Arial;
+}
+
+.divBorder{
+	height: auto; 
+	overflow: auto; 
+	width: 60%;
+	padding: 1%;
+	border: 5px double #204a87;
+	background-color: white;
+	margin: 0% 0% 0% 0%;
+}
+
+body{
+	background: url(/images/fondoHome2.jpg) no-repeat center top; 
+	background-position: 0px 0px;
+    background-attachment: fixed;
+    background-color: #fff;
+    -webkit-background-size: calc(100vw) calc(100vh);
+    -moz-background-size: calc(100vw) calc(100vh);
+    -o-background-size: calc(100vw) calc(100vh);
+    background-size: calc(100vw) calc(100vh);
+}
+
+div {
+  margin: 50px 50px 75px 100px;
+}
+
+.enlace {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  padding: 12px 200px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.enlace span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.enlace span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.enlace span {
+  padding-right: 25px;
+}
+
+.enlace:hover span:after {
+  opacity: 1;
+  right: 0;
+}

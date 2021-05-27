@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<title th:text=${title}></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="div1">
+		<h1 th:text=${title}></h1>
+	</div>
+	<form action="#" th:action="@{/administracion/medicamentos/guardar}" th:object="${medicament}" method="post">
+		<div class="div1">
+			<div th:if="${err}!= null">
+				<p th:text=${err}></p>
+			</div>
+		</div>
+		<!-- OCULTOS -->
+        <input type="hidden" id="oldMedicamentName" name="oldMedicamentName" th:value="${oldMedicamentName}"/>
+		<div class="div2" style="float: left; width: 40%; margin: 0% 0% 0% 10%">
+			<label class="col-form-label-sm" for="nombre">Nombre</label>
+           	<input th:field="*{medicamentName}" th:title="medicamentName"
+           	class="form-control form-control-sm" 
+           	id="medicamentName" type="text" required autofocus>
+		</div>
+		<div style="float: left; width: 100%">
+	       	<div style="float: left; width: 50%;">
+	       		<h2 align="center">Componentes químicos que lo forman</h2>
+	    			<div class="divtable2">
+		            <table id="componentsTable" class="center">
+		                <thead>
+		                <tr>
+		                    <th class="thadjusted">
+		                    </th>
+		                    <th>Nombre</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		               		<tr th:each="component : ${components}">
+		                    	<td class="thadjusted">
+		                    		<label class="container2">
+	  									<input th:id="${component.code}" type="checkbox" name="componentsL" th:value="${component.componentName}"/>
+	  									<span class="checkmark3"></span>
+									</label>
+		                    	</td>
+		                    	<td th:text="${component.componentName}">Nombre</td>
+		                	</tr>
+		                </tbody>
+		            </table>
+				</div>   		
+	       	</div>
+		</div>
+        
+		<div style="float: left; width: 100%">
+			<div class="divbutton">
+				<button type="submit" class="myButton">Guardar</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+$(document).ready(function() {
+	$.fn.DataTable.ext.pager.numbers_length = 5;
+	
+	var componentsTable = $('#componentsTable').DataTable({
+		"bLengthChange": false,
+        "lengthMenu": [15],
+		"columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+	$("form").on('submit', function(e){
+		   var $form = $(this);
+			
+			// Iterate over all checkboxes in the table
+		   componentsTable.$('input[type="checkbox"]').each(function(){
+		      // If checkbox doesn't exist in DOM
+		      if(!$.contains(document, this)){
+		         // If checkbox is checked
+		         if(this.checked){
+		            // Create a hidden element 
+		            $form.append(
+		               $('<input>')
+		                  .attr('type', 'hidden')
+		                  .attr('name', this.name)
+		                  .val(this.value)
+		            );
+		         }
+		      } 
+		   });
+	});
+	
+});
+</script>
+
+ <script th:inline="javascript">
+      // <![CDATA[
+        
+        var componentsList = /*[[${medicament.components}]]*/ [];
+        if (componentsList != null){
+        	for (var i = 0; i < componentsList.length; i++) {
+        		var componentId = "#"+componentsList[i].code;
+                $(componentId).prop( "checked", true );
+              }	
+        }
+
+      // ]]>
+</script>
+
+</html>
