@@ -92,6 +92,7 @@ public class allergyController {
 	    } else {
 		model.addAttribute("title", "Detalle Alergia");
 		model.addAttribute("allergy", allergyDto);
+		model.addAttribute("oldAllergyName", oldAllergyName);
 	    }
 	    return "admin/allergyDetails";
 	}

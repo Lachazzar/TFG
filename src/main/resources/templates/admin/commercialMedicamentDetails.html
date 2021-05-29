@@ -10,26 +10,26 @@
 	<div class="div1">
 		<h1 th:text=${title}></h1>
 	</div>
-	<form action="#" th:action="@{/administracion/medicamentos/guardar}" th:object="${medicament}" method="post">
+	<form action="#" th:action="@{/administracion/medicamentosComerciales/guardar}" th:object="${medicament}" method="post">
 		<div class="div1">
 			<div th:if="${err}!= null">
 				<p th:text=${err}></p>
 			</div>
 		</div>
 		<!-- OCULTOS -->
-        <input type="hidden" id="oldMedicamentName" name="oldMedicamentName" th:value="${oldMedicamentName}"/>
+        <input type="hidden" id="oldCommercialMedicamentName" name="oldCommercialMedicamentName" th:value="${oldCommercialMedicamentName}"/>
         <input type="hidden" id="code" name="code" th:value="${code}"/>
 		<div class="div2" style="float: left; width: 40%; margin: 0% 0% 0% 10%">
 			<label class="col-form-label-sm" for="nombre">Nombre</label>
-           	<input th:field="*{medicamentName}" th:title="medicamentName"
+           	<input th:field="*{commercialMedicamentName}" th:title="commercialMedicamentName"
            	class="form-control form-control-sm" 
-           	id="medicamentName" type="text" required autofocus>
+           	id="commercialMedicamentName" type="text" required autofocus>
 		</div>
 		<div style="float: left; width: 100%">
 	       	<div style="float: left; width: 50%;">
-	       		<h2 align="center">Componentes químicos que lo forman</h2>
+	       		<h2 align="center">Medicamento genérico</h2>
 	    			<div class="divtable2">
-		            <table id="componentsTable" class="center">
+		            <table id="medsTable" class="center">
 		                <thead>
 		                <tr>
 		                    <th class="thadjusted">
@@ -38,14 +38,11 @@
 		                </tr>
 		                </thead>
 		                <tbody>
-		               		<tr th:each="component : ${components}">
+		               		<tr th:each="medicament : ${medicamentsDto}">
 		                    	<td class="thadjusted">
-		                    		<label class="container2">
-	  									<input th:id="${component.code}" type="checkbox" name="componentsL" th:value="${component.componentName}"/>
-	  									<span class="checkmark3"></span>
-									</label>
+		                    		<input id="medicamentName" name="medicamentName" type="radio" th:value="${medicament.medicamentName}" required/>
 		                    	</td>
-		                    	<td th:text="${component.componentName}">Nombre</td>
+		                    	<td th:text="${medicament.medicamentName}">Nombre</td>
 		                	</tr>
 		                </tbody>
 		            </table>
@@ -67,7 +64,7 @@
 $(document).ready(function() {
 	$.fn.DataTable.ext.pager.numbers_length = 5;
 	
-	var componentsTable = $('#componentsTable').DataTable({
+	var medsTable = $('#medsTable').DataTable({
 		"bLengthChange": false,
         "lengthMenu": [15],
 		"columnDefs": [ {
@@ -95,11 +92,20 @@ $(document).ready(function() {
 		}
 	});
 	
+ 	var medSelected = '[[${medicament.medicamentName}]]';
+	var radio = medsTable.$('input[type="radio"]');
+	for (var i=0; i<radio.length; i++) {
+		var found = radio.get(i);
+		if (medSelected == found.value){
+			$(found).prop("checked", true);
+		}	
+	}
+	
 	$("form").on('submit', function(e){
 		   var $form = $(this);
 			
 			// Iterate over all checkboxes in the table
-		   componentsTable.$('input[type="checkbox"]').each(function(){
+		   medsTable.$('input[type="radio"]').each(function(){
 		      // If checkbox doesn't exist in DOM
 		      if(!$.contains(document, this)){
 		         // If checkbox is checked
@@ -117,20 +123,6 @@ $(document).ready(function() {
 	});
 	
 });
-</script>
-
- <script th:inline="javascript">
-      // <![CDATA[
-        
-        var componentsList = /*[[${medicament.components}]]*/ [];
-        if (componentsList != null){
-        	for (var i = 0; i < componentsList.length; i++) {
-        		var componentId = "#"+componentsList[i].code;
-                $(componentId).prop( "checked", true );
-              }	
-        }
-
-      // ]]>
 </script>
 
 </html>

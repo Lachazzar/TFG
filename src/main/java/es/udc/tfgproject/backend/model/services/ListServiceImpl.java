@@ -23,20 +23,13 @@ import es.udc.tfgproject.backend.model.entities.medicamentInformation.Family;
 import es.udc.tfgproject.backend.model.entities.medicamentInformation.FamilyDao;
 import es.udc.tfgproject.backend.model.entities.medicamentInformation.Medicament;
 import es.udc.tfgproject.backend.model.entities.medicamentInformation.MedicamentDao;
-import es.udc.tfgproject.backend.model.entities.restrictions.AllergyRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.AllergyRestrictionDao;
-import es.udc.tfgproject.backend.model.entities.restrictions.ComponentRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.ComponentRestrictionDao;
-import es.udc.tfgproject.backend.model.entities.restrictions.DiseaseRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.DiseaseRestrictionDao;
-import es.udc.tfgproject.backend.model.entities.restrictions.IntoleranceRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.IntoleranceRestrictionDao;
 import es.udc.tfgproject.backend.model.entities.restrictions.RegularRestriction;
 import es.udc.tfgproject.backend.model.entities.restrictions.RegularRestrictionDao;
 import es.udc.tfgproject.backend.rest.dtos.AllergyDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentCompleteDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentSimpleDto;
+import es.udc.tfgproject.backend.rest.dtos.CommercialMedicamentDto;
 import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
 import es.udc.tfgproject.backend.rest.dtos.FamilyDto;
 import es.udc.tfgproject.backend.rest.dtos.IntoleranceDto;
@@ -69,18 +62,6 @@ public class ListServiceImpl implements ListService {
 
     @Autowired
     private RegularRestrictionDao regularRestrictionDao;
-
-    @Autowired
-    private IntoleranceRestrictionDao intoleranceRestrictionDao;
-
-    @Autowired
-    private AllergyRestrictionDao allergyRestrictionDao;
-
-    @Autowired
-    private DiseaseRestrictionDao diseaseRestrictionDao;
-
-    @Autowired
-    private ComponentRestrictionDao componentRestrictionDao;
 
     // LISTAS
 
@@ -151,6 +132,17 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
+    public ArrayList<CommercialMedicamentDto> listAllCommercialMedicamentDto() {
+	ArrayList<CommercialMedicamentDto> medicamentList = new ArrayList<CommercialMedicamentDto>();
+	listAllCommercialMedicaments().forEach(d -> {
+	    CommercialMedicamentDto medicament = new CommercialMedicamentDto(d.getName());
+	    medicament.setMedicamentName(d.getMedicament().getname());
+	    medicamentList.add(medicament);
+	});
+	return medicamentList;
+    }
+
+    @Override
     public List<Medicament> listAllMedicaments() {
 	List<Medicament> medicaments = new ArrayList<Medicament>();
 	medicamentDao.findAll().forEach(m -> {
@@ -189,6 +181,18 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
+    public ArrayList<ChemicalComponentDto> listAllChemicalComponentsDtoExceptComponent(String code) {
+	ArrayList<ChemicalComponentDto> componentList = new ArrayList<ChemicalComponentDto>();
+	listAllChemicalComponents().forEach(d -> {
+	    ChemicalComponentDto component = new ChemicalComponentDto(d.getComponentName(), d.getFamily());
+	    if (!component.getCode().equals(code)) {
+		componentList.add(component);
+	    }
+	});
+	return componentList;
+    }
+
+    @Override
     public ArrayList<ChemicalComponentCompleteDto> listAllChemicalComponentsCompleteDto() {
 	ArrayList<ChemicalComponentCompleteDto> chemicalComponentList = new ArrayList<ChemicalComponentCompleteDto>();
 	listAllChemicalComponents().forEach(d -> {
@@ -203,25 +207,20 @@ public class ListServiceImpl implements ListService {
 
 	    regularRestrictions.addAll(d.getRegularRestrictions());
 
-	    d.getDiseaseRestrictions().forEach(dRestriction -> {
-		diseases.add(new DiseaseDto(dRestriction.getDisease().getDiseaseName()));
+	    d.getDiseases().forEach(dRestriction -> {
+		diseases.add(new DiseaseDto(dRestriction.getDiseaseName()));
 	    });
 
-	    d.getAllergyRestrictions().forEach(aRestriction -> {
-		allergies.add(new AllergyDto(aRestriction.getAllergy().getAllergyName()));
+	    d.getAllergies().forEach(aRestriction -> {
+		allergies.add(new AllergyDto(aRestriction.getAllergyName()));
 	    });
 
-	    d.getIntoleranceRestrictions().forEach(iRestriction -> {
-		intolerances.add(new IntoleranceDto(iRestriction.getIntolerance().getIntoleranceName()));
+	    d.getIntolerances().forEach(iRestriction -> {
+		intolerances.add(new IntoleranceDto(iRestriction.getIntoleranceName()));
 	    });
 
-	    d.getComponentRestrictions().forEach(ccRestriction -> {
-		ccRestriction.getChemicalComponentPair().forEach(comp -> {
-		    if (!comp.getComponentName().equals(d.getComponentName())) {
-			components.add(new ChemicalComponentSimpleDto(comp.getComponentName()));
-		    }
-		});
-
+	    d.getChemicalComponents().forEach(ccRestriction -> {
+		components.add(new ChemicalComponentSimpleDto(ccRestriction.getComponentName()));
 	    });
 
 	    chemicalComponent.setAllergies(allergies);
@@ -318,12 +317,6 @@ public class ListServiceImpl implements ListService {
 		allergySave = new Allergy();
 		allergySave.setAllergyName(allergyName);
 		allergySave = saveAllergy(allergySave);
-		AllergyRestriction ar = new AllergyRestriction();
-		ar.setRestrictionName(allergyName);
-		String code = allergyName.replaceAll("\\s", "");
-		ar.setCode(code);
-		ar.setAllergy(allergySave);
-		allergyRestrictionDao.saveAndFlush(ar);
 	    }
 	} else {
 	    if (!oldAllergyName.equals(allergyName)) {
@@ -401,12 +394,6 @@ public class ListServiceImpl implements ListService {
 		diseaseSave = new Disease();
 		diseaseSave.setDiseaseName(diseaseName);
 		saveDisease(diseaseSave);
-		DiseaseRestriction dr = new DiseaseRestriction();
-		dr.setRestrictionName(diseaseName);
-		String code = diseaseName.replaceAll("\\s", "");
-		dr.setCode(code);
-		dr.setDisease(diseaseSave);
-		diseaseRestrictionDao.saveAndFlush(dr);
 	    }
 	} else {
 	    if (!oldDiseaseName.equals(diseaseName)) {
@@ -431,8 +418,8 @@ public class ListServiceImpl implements ListService {
     // INTOLERANCIAS
 
     @Override
-    public void saveIntolerance(Intolerance intolerance) {
-	intoleranceDao.saveAndFlush(intolerance);
+    public Intolerance saveIntolerance(Intolerance intolerance) {
+	return intoleranceDao.saveAndFlush(intolerance);
 
     }
 
@@ -446,11 +433,71 @@ public class ListServiceImpl implements ListService {
 	return intoleranceDao.findByIntoleranceName(intoleranceName).get();
     }
 
+    @Override
+    public void deleteIntoleranceByCode(ArrayList<IntoleranceDto> intolerancesList, String code) {
+	intolerancesList.forEach(d -> {
+	    if (d.getCode().contentEquals(code)) {
+		Intolerance intoleranceRemove = getIntolerance(d.getIntoleranceName());
+		deleteIntolerance(intoleranceRemove);
+	    }
+	});
+
+    }
+
+    @Override
+    public IntoleranceDto getIntoleranceByCode(String code) {
+	ArrayList<IntoleranceDto> intolerancesList = listAllIntolerancesDto();
+	IntoleranceDto intoleranceFind = new IntoleranceDto();
+	intolerancesList.forEach(d -> {
+	    if (d.getCode().contentEquals(code)) {
+		intoleranceFind.setCode(code);
+		intoleranceFind.setIntoleranceName(d.getIntoleranceName());
+	    }
+	});
+	return intoleranceFind;
+    }
+
+    @Override
+    public Boolean checkAndSaveIntolerance(String oldIntoleranceName, String intoleranceName) {
+	Intolerance intoleranceSave;
+	Boolean hasError = false;
+
+	if (oldIntoleranceName == "" || oldIntoleranceName == null) {
+	    for (Intolerance d : listAllIntolerances()) {
+		if (d.getIntoleranceName().equals(intoleranceName)) {
+		    hasError = true;
+		}
+	    }
+	    if (hasError == false) {
+		intoleranceSave = new Intolerance();
+		intoleranceSave.setIntoleranceName(intoleranceName);
+		saveIntolerance(intoleranceSave);
+	    }
+	} else {
+	    if (!oldIntoleranceName.equals(intoleranceName)) {
+		for (Intolerance d : listAllIntolerances()) {
+		    if (d.getIntoleranceName().equals(intoleranceName)) {
+			hasError = true;
+		    }
+		}
+		if (hasError == false) {
+		    intoleranceSave = getIntolerance(oldIntoleranceName);
+		    intoleranceSave.setIntoleranceName(intoleranceName);
+		    saveIntolerance(intoleranceSave);
+		}
+	    } else {
+		intoleranceSave = getIntolerance(oldIntoleranceName);
+		saveIntolerance(intoleranceSave);
+	    }
+	}
+	return hasError;
+    }
+
     // FAMILIAS
 
     @Override
-    public void saveFamily(Family family) {
-	familyDao.saveAndFlush(family);
+    public Family saveFamily(Family family) {
+	return familyDao.saveAndFlush(family);
     }
 
     @Override
@@ -464,11 +511,70 @@ public class ListServiceImpl implements ListService {
 	return familyDao.findByFamilyName(familyName).get();
     }
 
+    @Override
+    public void deleteFamilyByCode(ArrayList<FamilyDto> familyList, String code) {
+	familyList.forEach(d -> {
+	    if (d.getCode().contentEquals(code)) {
+		Family familyRemove = getFamily(d.getFamilyName());
+		deleteFamily(familyRemove);
+	    }
+	});
+    }
+
+    @Override
+    public FamilyDto getFamilyByCode(String code) {
+	ArrayList<FamilyDto> familiesList = listAllFamiliesDto();
+	FamilyDto familyFind = new FamilyDto();
+	familiesList.forEach(d -> {
+	    if (d.getCode().contentEquals(code)) {
+		familyFind.setCode(code);
+		familyFind.setFamilyName(d.getFamilyName());
+	    }
+	});
+	return familyFind;
+    }
+
+    @Override
+    public Boolean checkAndSaveFamily(String oldFamilyName, String familyName) {
+	Family familySave;
+	Boolean hasError = false;
+
+	if (oldFamilyName == "" || oldFamilyName == null) {
+	    for (Family d : listAllFamilies()) {
+		if (d.getFamilyName().equals(familyName)) {
+		    hasError = true;
+		}
+	    }
+	    if (hasError == false) {
+		familySave = new Family();
+		familySave.setFamilyName(familyName);
+		saveFamily(familySave);
+	    }
+	} else {
+	    if (!oldFamilyName.equals(familyName)) {
+		for (Family d : listAllFamilies()) {
+		    if (d.getFamilyName().equals(familyName)) {
+			hasError = true;
+		    }
+		}
+		if (hasError == false) {
+		    familySave = getFamily(oldFamilyName);
+		    familySave.setFamilyName(familyName);
+		    saveFamily(familySave);
+		}
+	    } else {
+		familySave = getFamily(oldFamilyName);
+		saveFamily(familySave);
+	    }
+	}
+	return hasError;
+    }
+
     // COMPONENTES QUIMICOS
 
     @Override
-    public void saveChemicalComponent(ChemicalComponent chemicalComponent) {
-	chemicalComponentDao.saveAndFlush(chemicalComponent);
+    public ChemicalComponent saveChemicalComponent(ChemicalComponent chemicalComponent) {
+	return chemicalComponentDao.saveAndFlush(chemicalComponent);
     }
 
     @Override
@@ -532,12 +638,19 @@ public class ListServiceImpl implements ListService {
 		componentSave.setFamily(getFamily(family));
 		componentSave = chemicalComponentDao.saveAndFlush(componentSave);
 		componentSave.setRegularRestrictions(rRestrictionArrayToSet(rRestrictionsL));
-		componentSave.setIntoleranceRestrictions(intolerancesArrayToSet(intolerancesL));
-		componentSave.setAllergyRestrictions(allergiesArrayToSet(allergiesL));
-		componentSave.setDiseaseRestrictions(diseasesArrayToSet(diseasesL));
-		componentSave.setComponentRestrictions(componentsArrayToSet(componentsL, componentSave));
+		componentSave.setIntolerances(intolerancesArrayToSet(intolerancesL));
+		componentSave.setAllergies(allergiesArrayToSet(allergiesL));
+		componentSave.setDiseases(diseasesArrayToSet(diseasesL));
+		componentSave.setChemicalComponents(chemicalComponentsArrayToSet(componentsL));
 
-		saveChemicalComponent(componentSave);
+		ChemicalComponent ccAdd = saveChemicalComponent(componentSave);
+
+		for (ChemicalComponent cc : componentSave.getChemicalComponents()) {
+		    Set<ChemicalComponent> ccSet = cc.getChemicalComponents();
+		    ccSet.add(ccAdd);
+		    cc.setChemicalComponents(ccSet);
+		    saveChemicalComponent(cc);
+		}
 	    }
 	} else {
 	    if (!oldComponentName.equals(componentName)) {
@@ -551,24 +664,38 @@ public class ListServiceImpl implements ListService {
 		    componentSave.setComponentName(componentName);
 		    componentSave.setFamily(getFamily(family));
 		    componentSave.setRegularRestrictions(rRestrictionArrayToSet(rRestrictionsL));
-		    componentSave.setIntoleranceRestrictions(intolerancesArrayToSet(intolerancesL));
-		    componentSave.setAllergyRestrictions(allergiesArrayToSet(allergiesL));
-		    componentSave.setDiseaseRestrictions(diseasesArrayToSet(diseasesL));
-		    componentSave.setComponentRestrictions(componentsArrayToSet(componentsL, componentSave));
+		    componentSave.setIntolerances(intolerancesArrayToSet(intolerancesL));
+		    componentSave.setAllergies(allergiesArrayToSet(allergiesL));
+		    componentSave.setDiseases(diseasesArrayToSet(diseasesL));
+		    componentSave.setChemicalComponents(chemicalComponentsArrayToSet(componentsL));
 
-		    saveChemicalComponent(componentSave);
+		    ChemicalComponent ccAdd = saveChemicalComponent(componentSave);
+
+		    for (ChemicalComponent cc : componentSave.getChemicalComponents()) {
+			Set<ChemicalComponent> ccSet = cc.getChemicalComponents();
+			ccSet.add(ccAdd);
+			cc.setChemicalComponents(ccSet);
+			saveChemicalComponent(cc);
+		    }
 		}
 	    } else {
 		componentSave = getChemicalComponent(oldComponentName);
 		componentSave.setComponentName(componentName);
 		componentSave.setFamily(getFamily(family));
 		componentSave.setRegularRestrictions(rRestrictionArrayToSet(rRestrictionsL));
-		componentSave.setIntoleranceRestrictions(intolerancesArrayToSet(intolerancesL));
-		componentSave.setAllergyRestrictions(allergiesArrayToSet(allergiesL));
-		componentSave.setDiseaseRestrictions(diseasesArrayToSet(diseasesL));
-		componentSave.setComponentRestrictions(componentsArrayToSet(componentsL, componentSave));
+		componentSave.setIntolerances(intolerancesArrayToSet(intolerancesL));
+		componentSave.setAllergies(allergiesArrayToSet(allergiesL));
+		componentSave.setDiseases(diseasesArrayToSet(diseasesL));
+		componentSave.setChemicalComponents(chemicalComponentsArrayToSet(componentsL));
 
 		saveChemicalComponent(componentSave);
+
+		for (ChemicalComponent cc : componentSave.getChemicalComponents()) {
+		    Set<ChemicalComponent> ccSet = cc.getChemicalComponents();
+		    ccSet.add(componentSave);
+		    cc.setChemicalComponents(ccSet);
+		    saveChemicalComponent(cc);
+		}
 	    }
 	}
 	return hasError;
@@ -577,8 +704,8 @@ public class ListServiceImpl implements ListService {
     // MEDICAMENTOS COMERCIALES
 
     @Override
-    public void saveCommercialMedicament(CommercialMedicament commercialMedicament) {
-	commercialMedicamentDao.saveAndFlush(commercialMedicament);
+    public CommercialMedicament saveCommercialMedicament(CommercialMedicament commercialMedicament) {
+	return commercialMedicamentDao.saveAndFlush(commercialMedicament);
 
     }
 
@@ -591,6 +718,80 @@ public class ListServiceImpl implements ListService {
     @Override
     public CommercialMedicament getCommercialMedicament(String name) {
 	return commercialMedicamentDao.findByName(name).get();
+    }
+
+    @Override
+    public void deleteCommercialMedicamentByCode(ArrayList<CommercialMedicamentDto> medicamentList, String code) {
+	medicamentList.forEach(d -> {
+	    if (d.getCode().contentEquals(code)) {
+		CommercialMedicament comMedicamentRemove = getCommercialMedicament(d.getCommercialMedicamentName());
+		deleteCommercialMedicament(comMedicamentRemove);
+	    }
+	});
+    }
+
+    @Override
+    public CommercialMedicamentDto getCommercialMedicamentByCode(String code) {
+	ArrayList<CommercialMedicamentDto> comMedicamentList = listAllCommercialMedicamentDto();
+	CommercialMedicamentDto comMedicamentFind = new CommercialMedicamentDto();
+	comMedicamentList.forEach(d -> {
+	    if (d.getCode().contentEquals(code)) {
+		comMedicamentFind.setCode(code);
+		comMedicamentFind.setCommercialMedicamentName(d.getCommercialMedicamentName());
+		comMedicamentFind.setMedicamentName(d.getMedicamentName());
+	    }
+	});
+	return comMedicamentFind;
+    }
+
+    @Override
+    public Boolean checkAndSaveCommercialMedicament(String oldCommercialMedicamentName, String commercialMedicamentName,
+	    String medicamentName) {
+	CommercialMedicament comMedicamentSave;
+	Boolean hasError = false;
+
+	if (oldCommercialMedicamentName == "" || oldCommercialMedicamentName == null) {
+	    for (CommercialMedicament d : listAllCommercialMedicaments()) {
+		if (d.getName().equals(commercialMedicamentName)) {
+		    hasError = true;
+		}
+	    }
+	    if (hasError == false) {
+		comMedicamentSave = new CommercialMedicament();
+		comMedicamentSave.setName(commercialMedicamentName);
+		if (medicamentName != null && medicamentName != "") {
+		    Medicament medicament = getMedicament(medicamentName);
+		    comMedicamentSave.setMedicament(medicament);
+		}
+		saveCommercialMedicament(comMedicamentSave);
+	    }
+	} else {
+	    if (!oldCommercialMedicamentName.equals(commercialMedicamentName)) {
+		for (CommercialMedicament d : listAllCommercialMedicaments()) {
+		    if (d.getName().equals(commercialMedicamentName)) {
+			hasError = true;
+		    }
+		}
+		if (hasError == false) {
+		    comMedicamentSave = getCommercialMedicament(oldCommercialMedicamentName);
+		    comMedicamentSave.setName(commercialMedicamentName);
+		    if (medicamentName != null && medicamentName != "") {
+			Medicament medicament = getMedicament(medicamentName);
+			comMedicamentSave.setMedicament(medicament);
+		    }
+		    saveCommercialMedicament(comMedicamentSave);
+		}
+	    } else {
+		comMedicamentSave = getCommercialMedicament(oldCommercialMedicamentName);
+		comMedicamentSave.setName(commercialMedicamentName);
+		if (medicamentName != null && medicamentName != "") {
+		    Medicament medicament = getMedicament(medicamentName);
+		    comMedicamentSave.setMedicament(medicament);
+		}
+		saveCommercialMedicament(comMedicamentSave);
+	    }
+	}
+	return hasError;
     }
 
     // MEDICAMENTOS
@@ -698,40 +899,39 @@ public class ListServiceImpl implements ListService {
 	return rRestrictionsSet;
     }
 
-    private Set<IntoleranceRestriction> intolerancesArrayToSet(String[] intolerances) {
-	List<IntoleranceRestriction> intolerancesList = new ArrayList<IntoleranceRestriction>();
+    private Set<Intolerance> intolerancesArrayToSet(String[] intolerances) {
+	List<Intolerance> intolerancesList = new ArrayList<Intolerance>();
 	if (intolerances != null) {
 	    for (int i = 0; i < intolerances.length; i++) {
-		intolerancesList
-			.add(intoleranceRestrictionDao.findByIntolerance(getIntolerance(intolerances[i])).get());
+		intolerancesList.add(intoleranceDao.findByIntoleranceName(intolerances[i]).get());
 	    }
 	}
 
-	Set<IntoleranceRestriction> intolerancesSet = new HashSet<>(intolerancesList);
+	Set<Intolerance> intolerancesSet = new HashSet<>(intolerancesList);
 	return intolerancesSet;
     }
 
-    private Set<AllergyRestriction> allergiesArrayToSet(String[] allergies) {
-	List<AllergyRestriction> allergiesList = new ArrayList<AllergyRestriction>();
+    private Set<Allergy> allergiesArrayToSet(String[] allergies) {
+	List<Allergy> allergiesList = new ArrayList<Allergy>();
 	if (allergies != null) {
 	    for (int i = 0; i < allergies.length; i++) {
-		allergiesList.add(allergyRestrictionDao.findByAllergy(getAllergy(allergies[i])).get());
+		allergiesList.add(allergyDao.findByAllergyName(allergies[i]).get());
 	    }
 	}
 
-	Set<AllergyRestriction> allergiesSet = new HashSet<>(allergiesList);
+	Set<Allergy> allergiesSet = new HashSet<>(allergiesList);
 	return allergiesSet;
     }
 
-    private Set<DiseaseRestriction> diseasesArrayToSet(String[] diseases) {
-	List<DiseaseRestriction> diseasesList = new ArrayList<DiseaseRestriction>();
+    private Set<Disease> diseasesArrayToSet(String[] diseases) {
+	List<Disease> diseasesList = new ArrayList<Disease>();
 	if (diseases != null) {
 	    for (int i = 0; i < diseases.length; i++) {
-		diseasesList.add(diseaseRestrictionDao.findByDisease(getDisease(diseases[i])).get());
+		diseasesList.add(diseaseDao.findByDiseaseName(diseases[i]).get());
 	    }
 	}
 
-	Set<DiseaseRestriction> diseasesSet = new HashSet<>(diseasesList);
+	Set<Disease> diseasesSet = new HashSet<>(diseasesList);
 	return diseasesSet;
     }
 
@@ -745,70 +945,6 @@ public class ListServiceImpl implements ListService {
 
 	Set<ChemicalComponent> componentsSet = new HashSet<>(componentsList);
 	return componentsSet;
-    }
-
-    private Set<ComponentRestriction> componentsArrayToSet(String[] components, ChemicalComponent mainComponent) {
-	List<ComponentRestriction> componentRestrictionList = new ArrayList<ComponentRestriction>();
-	if (components != null) {
-	    for (int i = 0; i < components.length; i++) {
-		ChemicalComponent actualComponent = getChemicalComponent(components[i]);
-		ArrayList<ComponentRestriction> actualComponentRestrictions = new ArrayList<ComponentRestriction>();
-		actualComponentRestrictions.addAll(actualComponent.getComponentRestrictions());
-		if (actualComponentRestrictions.isEmpty()) {
-		    ComponentRestriction crAdd = new ComponentRestriction();
-		    Set<ChemicalComponent> chemicalComponentPair = new HashSet<>();
-		    crAdd.setRestrictionName("Nuevo");
-		    crAdd.setCode("Nuevo");
-		    chemicalComponentPair.add(actualComponent);
-		    chemicalComponentPair.add(mainComponent);
-		    crAdd.setChemicalComponentPair(chemicalComponentPair);
-		    crAdd = componentRestrictionDao.saveAndFlush(crAdd);
-		    String restrictionName = "Ajuste de dósis por interacción farmacológica " + crAdd.getId();
-		    String code = "ADIF" + crAdd.getId();
-		    crAdd.setRestrictionName(restrictionName);
-		    crAdd.setCode(code);
-		    crAdd = componentRestrictionDao.saveAndFlush(crAdd);
-		    Set<ComponentRestriction> actualList = actualComponent.getComponentRestrictions();
-		    actualList.add(crAdd);
-		    actualComponent.setComponentRestrictions(actualList);
-		    saveChemicalComponent(actualComponent);
-		    componentRestrictionList.add(crAdd);
-		} else {
-		    Boolean añadida = false;
-		    for (ComponentRestriction cr : actualComponentRestrictions) {
-			for (ChemicalComponent cc : cr.getChemicalComponentPair()) {
-			    if (cc.getComponentName().equals(mainComponent.getComponentName())) {
-				componentRestrictionList.add(cr);
-				añadida = true;
-			    }
-			}
-		    }
-		    if (!añadida) {
-			ComponentRestriction crAdd = new ComponentRestriction();
-			Set<ChemicalComponent> chemicalComponentPair = new HashSet<>();
-			crAdd.setRestrictionName("Nuevo");
-			crAdd.setCode("Nuevo");
-			chemicalComponentPair.add(actualComponent);
-			chemicalComponentPair.add(mainComponent);
-			crAdd.setChemicalComponentPair(chemicalComponentPair);
-			crAdd = componentRestrictionDao.saveAndFlush(crAdd);
-			String restrictionName = "Ajuste de dósis por interacción farmacológica " + crAdd.getId();
-			String code = "ADIF" + crAdd.getId();
-			crAdd.setRestrictionName(restrictionName);
-			crAdd.setCode(code);
-			crAdd = componentRestrictionDao.saveAndFlush(crAdd);
-			Set<ComponentRestriction> actualList = actualComponent.getComponentRestrictions();
-			actualList.add(crAdd);
-			actualComponent.setComponentRestrictions(actualList);
-			saveChemicalComponent(actualComponent);
-			componentRestrictionList.add(crAdd);
-		    }
-		}
-	    }
-	}
-
-	Set<ComponentRestriction> componentRestrictionSet = new HashSet<>(componentRestrictionList);
-	return componentRestrictionSet;
     }
 
 }

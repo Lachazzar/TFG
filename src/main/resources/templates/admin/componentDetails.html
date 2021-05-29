@@ -18,6 +18,7 @@
 		</div>
 		<!-- OCULTOS -->
         <input type="hidden" id="oldComponentName" name="oldComponentName" th:value="${oldComponentName}"/>
+        <input type="hidden" id="code" name="code" th:value="${code}"/>
 		<div class="div2" style="float: left; width: 40%; margin: 0% 0% 0% 10%">
 			<label class="col-form-label-sm" for="nombre">Nombre</label>
            	<input th:field="*{componentName}" th:title="componentName"
@@ -39,7 +40,7 @@
 		                <tbody>
 		               		<tr th:each="family : ${families}">
 		                    	<td class="thadjusted">
-		                    		<input th:id="${family.code}" name="family" type="radio" th:value="${family.familyName}"/>
+		                    		<input th:id="${family.code}" name="family" type="radio" th:value="${family.familyName}" required/>
 		                    	</td>
 		                    	<td th:text="${family.familyName}">Nombre</td>
 		                	</tr>

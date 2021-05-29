@@ -12,10 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import es.udc.tfgproject.backend.model.entities.restrictions.AllergyRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.ComponentRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.DiseaseRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.IntoleranceRestriction;
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Allergy;
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Disease;
+import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Intolerance;
 import es.udc.tfgproject.backend.model.entities.restrictions.RegularRestriction;
 
 @Entity
@@ -25,10 +24,10 @@ public class ChemicalComponent {
     private String componentName;
     private Family family;
     private Set<RegularRestriction> regularRestrictions;
-    private Set<DiseaseRestriction> diseaseRestrictions;
-    private Set<AllergyRestriction> allergyRestrictions;
-    private Set<IntoleranceRestriction> intoleranceRestrictions;
-    private Set<ComponentRestriction> componentRestrictions;
+    private Set<Disease> diseases;
+    private Set<Allergy> allergies;
+    private Set<Intolerance> intolerances;
+    private Set<ChemicalComponent> chemicalComponents;
 
     public ChemicalComponent() {
     }
@@ -77,43 +76,43 @@ public class ChemicalComponent {
     }
 
     @ManyToMany
-    @JoinTable(name = "ChemicalComponent_DiseaseRestriction", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "diseaseRestriction_id"))
-    public Set<DiseaseRestriction> getDiseaseRestrictions() {
-	return diseaseRestrictions;
+    @JoinTable(name = "ChemicalComponent_Disease", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "disease_id"))
+    public Set<Disease> getDiseases() {
+	return diseases;
     }
 
-    public void setDiseaseRestrictions(Set<DiseaseRestriction> diseaseRestrictions) {
-	this.diseaseRestrictions = diseaseRestrictions;
-    }
-
-    @ManyToMany
-    @JoinTable(name = "ChemicalComponent_AllergyRestriction", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "allergyRestriction_id"))
-    public Set<AllergyRestriction> getAllergyRestrictions() {
-	return allergyRestrictions;
-    }
-
-    public void setAllergyRestrictions(Set<AllergyRestriction> allergyRestrictions) {
-	this.allergyRestrictions = allergyRestrictions;
+    public void setDiseases(Set<Disease> diseases) {
+	this.diseases = diseases;
     }
 
     @ManyToMany
-    @JoinTable(name = "ChemicalComponent_IntoleranceRestriction", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "intoleranceRestriction_id"))
-    public Set<IntoleranceRestriction> getIntoleranceRestrictions() {
-	return intoleranceRestrictions;
+    @JoinTable(name = "ChemicalComponent_Allergy", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
+    public Set<Allergy> getAllergies() {
+	return allergies;
     }
 
-    public void setIntoleranceRestrictions(Set<IntoleranceRestriction> intoleranceRestrictions) {
-	this.intoleranceRestrictions = intoleranceRestrictions;
+    public void setAllergies(Set<Allergy> allergies) {
+	this.allergies = allergies;
     }
 
     @ManyToMany
-    @JoinTable(name = "ChemicalComponent_ComponentRestriction", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "componentRestriction_id"))
-    public Set<ComponentRestriction> getComponentRestrictions() {
-	return componentRestrictions;
+    @JoinTable(name = "ChemicalComponent_Intolerance", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "intolerance_id"))
+    public Set<Intolerance> getIntolerances() {
+	return intolerances;
     }
 
-    public void setComponentRestrictions(Set<ComponentRestriction> componentRestrictions) {
-	this.componentRestrictions = componentRestrictions;
+    public void setIntolerances(Set<Intolerance> intolerances) {
+	this.intolerances = intolerances;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "ChemicalComponent_ChemicalComponent", joinColumns = @JoinColumn(name = "chemicalComponent_id"), inverseJoinColumns = @JoinColumn(name = "chemicalComponent2_id"))
+    public Set<ChemicalComponent> getChemicalComponents() {
+	return chemicalComponents;
+    }
+
+    public void setChemicalComponents(Set<ChemicalComponent> chemicalComponents) {
+	this.chemicalComponents = chemicalComponents;
     }
 
 }

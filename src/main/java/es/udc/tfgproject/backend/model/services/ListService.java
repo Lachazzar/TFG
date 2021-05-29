@@ -14,6 +14,7 @@ import es.udc.tfgproject.backend.model.entities.restrictions.RegularRestriction;
 import es.udc.tfgproject.backend.rest.dtos.AllergyDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentCompleteDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentDto;
+import es.udc.tfgproject.backend.rest.dtos.CommercialMedicamentDto;
 import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
 import es.udc.tfgproject.backend.rest.dtos.FamilyDto;
 import es.udc.tfgproject.backend.rest.dtos.IntoleranceDto;
@@ -36,6 +37,8 @@ public interface ListService {
 
     List<CommercialMedicament> listAllCommercialMedicaments();
 
+    ArrayList<CommercialMedicamentDto> listAllCommercialMedicamentDto();
+
     List<Medicament> listAllMedicaments();
 
     ArrayList<MedicamentExtendedDto> listAllMedicamentsExtendedDto();
@@ -43,6 +46,8 @@ public interface ListService {
     List<ChemicalComponent> listAllChemicalComponents();
 
     ArrayList<ChemicalComponentDto> listAllChemicalComponentsDto();
+
+    ArrayList<ChemicalComponentDto> listAllChemicalComponentsDtoExceptComponent(String code);
 
     ArrayList<ChemicalComponentCompleteDto> listAllChemicalComponentsCompleteDto();
 
@@ -79,21 +84,33 @@ public interface ListService {
     Boolean checkAndSaveDisease(String oldDiseaseName, String diseaseName);
 
     // INTOLERANCIAS
-    void saveIntolerance(Intolerance intolerance);
+    Intolerance saveIntolerance(Intolerance intolerance);
 
     void deleteIntolerance(Intolerance intolerance);
 
+    void deleteIntoleranceByCode(ArrayList<IntoleranceDto> intolerancesList, String code);
+
+    IntoleranceDto getIntoleranceByCode(String code);
+
     Intolerance getIntolerance(String intoleranceName);
 
+    Boolean checkAndSaveIntolerance(String oldIntoleranceName, String intoleranceName);
+
     // FAMILIAS
-    void saveFamily(Family family);
+    Family saveFamily(Family family);
 
     void deleteFamily(Family family);
 
+    void deleteFamilyByCode(ArrayList<FamilyDto> familyList, String code);
+
+    FamilyDto getFamilyByCode(String code);
+
     Family getFamily(String familyName);
 
+    Boolean checkAndSaveFamily(String oldFamilyName, String familyName);
+
     // COMPONENTES QUIMICOS
-    void saveChemicalComponent(ChemicalComponent chemicalComponent);
+    ChemicalComponent saveChemicalComponent(ChemicalComponent chemicalComponent);
 
     void deleteChemicalComponentByCode(ArrayList<ChemicalComponentCompleteDto> chemicalComponentList, String code);
 
@@ -108,11 +125,18 @@ public interface ListService {
 	    String[] rRestrictionsL);
 
     // MEDICAMENTOS COMERCIALES
-    void saveCommercialMedicament(CommercialMedicament commercialMedicament);
+    CommercialMedicament saveCommercialMedicament(CommercialMedicament commercialMedicament);
 
     void deleteCommercialMedicament(CommercialMedicament commercialMedicament);
 
+    void deleteCommercialMedicamentByCode(ArrayList<CommercialMedicamentDto> medicamentList, String code);
+
+    CommercialMedicamentDto getCommercialMedicamentByCode(String code);
+
     CommercialMedicament getCommercialMedicament(String name);
+
+    Boolean checkAndSaveCommercialMedicament(String oldCommercialMedicamentName, String commercialMedicamentName,
+	    String medicamentName);
 
     // MEDICAMENTOS
     void saveMedicament(Medicament medicament);

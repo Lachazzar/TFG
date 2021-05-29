@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<title th:text=${title}></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="div1">
+		<h1 th:text=${title}></h1>
+	</div>
+	<form action="#" th:action="@{/administracion/familias/guardar}" th:object="${family}" method="post">
+		<div class="div1">
+			<div th:if="${err}!= null">
+				<p th:text=${err}></p>
+			</div>
+		</div>
+		<!-- OCULTOS -->
+        <input type="hidden" id="oldFamilyName" name="oldFamilyName" th:value="${oldFamilyName}"/>
+		<div class="div2" style="float: left; width: 40%; margin: 0% 0% 0% 10%">
+			<label class="col-form-label-sm" for="nombre">Nombre</label>
+           	<input th:field="*{familyName}" th:title="familyName"
+           	class="form-control form-control-sm" 
+           	id="familyName" type="text" required autofocus>
+		</div>
+		<div style="float: left; width: 100%">
+			<div class="divbutton">
+				<button type="submit" class="myButton">Guardar</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>

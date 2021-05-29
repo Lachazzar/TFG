@@ -20,10 +20,6 @@ import es.udc.tfgproject.backend.model.entities.medicamentInformation.Commercial
 import es.udc.tfgproject.backend.model.entities.medicamentInformation.CommercialMedicamentDao;
 import es.udc.tfgproject.backend.model.entities.patientInformation.MedicalHistory;
 import es.udc.tfgproject.backend.model.entities.patientInformation.Treatment;
-import es.udc.tfgproject.backend.model.entities.restrictions.AllergyRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.ComponentRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.DiseaseRestriction;
-import es.udc.tfgproject.backend.model.entities.restrictions.IntoleranceRestriction;
 import es.udc.tfgproject.backend.model.entities.restrictions.RegularRestriction;
 import es.udc.tfgproject.backend.model.exceptions.InstanceNotFoundException;
 
@@ -350,55 +346,52 @@ public class MedicalServiceImpl implements MedicalService {
     private List<Alert> chemicalComponentsInteractionsRestrictionFilter(List<ChemicalComponent> actualList,
 	    List<ChemicalComponent> newList, boolean comprobarRecetados) {
 	List<Alert> chemicalComponentsInteractionsRestrictionReport = new ArrayList<>();
-	List<ComponentRestriction> checkedList = new ArrayList<>();
+	List<ChemicalComponent> checkedList = new ArrayList<ChemicalComponent>();
 	boolean aRecetar = false;
 	String title = "Restricciones entre componentes químicos";
 	String chemicalComponentsInteractionAlert = null;
 	Alert alert = null;
 
-	if (comprobarRecetados) {
-	    for (ChemicalComponent cc : actualList) {
-		for (ComponentRestriction cr : cc.getComponentRestrictions()) {
-		    if (!checkedList.contains(cr)) {
-			List<ChemicalComponent> parRestriction = new ArrayList<ChemicalComponent>(
-				cr.getChemicalComponentPair());
-			if (parRestriction.contains(cc)) {
-			    parRestriction.remove(cc);
-			}
-			for (ChemicalComponent ccRestriction : parRestriction) {
-			    if (actualList.contains(ccRestriction)) {
-				chemicalComponentsInteractionAlert = "Uno de los componentes químicos (ya recetados) "
-					+ cc.getComponentName() + " o " + ccRestriction.getComponentName()
-					+ " no debería administrarse mientras permanezca vigente el otro";
-				alert = new Alert(title, chemicalComponentsInteractionAlert, aRecetar);
-				chemicalComponentsInteractionsRestrictionReport
-					.add(chemicalComponentsInteractionsRestrictionReport.size(), alert);
-			    }
-			}
-		    }
-		    checkedList.add(cr);
-		}
+	List<ChemicalComponent> totalList = actualList;
+
+	for (ChemicalComponent cnew : newList) {
+	    if (!totalList.contains(cnew)) {
+		totalList.add(cnew);
 	    }
 	}
+
+	if (comprobarRecetados) {
+	    for (ChemicalComponent cc : actualList) {
+		for (ChemicalComponent cr : cc.getChemicalComponents()) {
+		    if (!checkedList.contains(cr)) {
+			if (totalList.contains(cr)) {
+			    chemicalComponentsInteractionAlert = "Uno de los componentes químicos "
+				    + cc.getComponentName() + " o " + cr.getComponentName()
+				    + " no debería administrarse mientras permanezca vigente el otro";
+			    alert = new Alert(title, chemicalComponentsInteractionAlert, aRecetar);
+			    chemicalComponentsInteractionsRestrictionReport
+				    .add(chemicalComponentsInteractionsRestrictionReport.size(), alert);
+			}
+		    }
+		}
+		checkedList.add(cc);
+	    }
+	}
+
 	aRecetar = true;
 	for (ChemicalComponent cc : newList) {
-	    for (ComponentRestriction cr : cc.getComponentRestrictions()) {
-		List<ChemicalComponent> parRestriction = new ArrayList<ChemicalComponent>(
-			cr.getChemicalComponentPair());
-		if (parRestriction.contains(cc)) {
-		    parRestriction.remove(cc);
-		}
-		for (ChemicalComponent ccRestriction : parRestriction) {
-		    if (actualList.contains(ccRestriction)) {
-			chemicalComponentsInteractionAlert = "El componente químico (a recetar) "
-				+ cc.getComponentName()
-				+ " no debería recetarse mientras esté vigente el componente químico (ya recetado) "
-				+ ccRestriction.getComponentName();
+	    for (ChemicalComponent cr : cc.getChemicalComponents()) {
+		if (!checkedList.contains(cr)) {
+		    if (totalList.contains(cr)) {
+			chemicalComponentsInteractionAlert = "Uno de los componentes químicos " + cc.getComponentName()
+				+ " o " + cr.getComponentName()
+				+ " no debería administrarse mientras permanezca vigente el otro";
 			alert = new Alert(title, chemicalComponentsInteractionAlert, aRecetar);
 			chemicalComponentsInteractionsRestrictionReport
 				.add(chemicalComponentsInteractionsRestrictionReport.size(), alert);
 		    }
 		}
+		checkedList.add(cc);
 	    }
 	}
 	return chemicalComponentsInteractionsRestrictionReport;
@@ -437,31 +430,31 @@ public class MedicalServiceImpl implements MedicalService {
 
 	if (comprobarRecetados) {
 	    for (ChemicalComponent cc : actualList) {
-		for (AllergyRestriction ar : cc.getAllergyRestrictions()) {
-		    if (allergyListNames.contains(ar.getAllergy().getAllergyName())) {
+		for (Allergy ar : cc.getAllergies()) {
+		    if (allergyListNames.contains(ar.getAllergyName())) {
 			title = "Restricciones con alergias";
 			diseaseAllergyIntolerationAlert = "El componente químico (ya recetado) " + cc.getComponentName()
-				+ " no debería recetarse debido a su alergia: " + ar.getRestrictionName();
+				+ " no debería recetarse debido a su alergia: " + ar.getAllergyName();
 			alert = new Alert(title, diseaseAllergyIntolerationAlert, aRecetar);
 			diseaseAllergyIntolerationRestrictionReport
 				.add(diseaseAllergyIntolerationRestrictionReport.size(), alert);
 		    }
 		}
-		for (DiseaseRestriction dr : cc.getDiseaseRestrictions()) {
-		    if (diseaseListNames.contains(dr.getDisease().getDiseaseName())) {
+		for (Disease dr : cc.getDiseases()) {
+		    if (diseaseListNames.contains(dr.getDiseaseName())) {
 			title = "Restricciones con enfermedades";
 			diseaseAllergyIntolerationAlert = "El componente químico (ya recetado) " + cc.getComponentName()
-				+ " no debería recetarse debido a su enfermedad: " + dr.getRestrictionName();
+				+ " no debería recetarse debido a su enfermedad: " + dr.getDiseaseName();
 			alert = new Alert(title, diseaseAllergyIntolerationAlert, aRecetar);
 			diseaseAllergyIntolerationRestrictionReport
 				.add(diseaseAllergyIntolerationRestrictionReport.size(), alert);
 		    }
 		}
-		for (IntoleranceRestriction ir : cc.getIntoleranceRestrictions()) {
-		    if (intoleranceListNames.contains(ir.getIntolerance().getIntoleranceName())) {
+		for (Intolerance ir : cc.getIntolerances()) {
+		    if (intoleranceListNames.contains(ir.getIntoleranceName())) {
 			title = "Restricciones con intolerancias";
 			diseaseAllergyIntolerationAlert = "El componente químico (ya recetado) " + cc.getComponentName()
-				+ " no debería recetarse debido a su intolerancia: " + ir.getRestrictionName();
+				+ " no debería recetarse debido a su intolerancia: " + ir.getIntoleranceName();
 			alert = new Alert(title, diseaseAllergyIntolerationAlert, aRecetar);
 			diseaseAllergyIntolerationRestrictionReport
 				.add(diseaseAllergyIntolerationRestrictionReport.size(), alert);
@@ -471,31 +464,31 @@ public class MedicalServiceImpl implements MedicalService {
 	}
 	aRecetar = true;
 	for (ChemicalComponent cc : newList) {
-	    for (AllergyRestriction ar : cc.getAllergyRestrictions()) {
-		if (allergyListNames.contains(ar.getAllergy().getAllergyName())) {
+	    for (Allergy ar : cc.getAllergies()) {
+		if (allergyListNames.contains(ar.getAllergyName())) {
 		    title = "Restricciones con alergias";
 		    diseaseAllergyIntolerationAlert = "El componente químico (a recetar) " + cc.getComponentName()
-			    + " no debería recetarse debido a su alergia: " + ar.getRestrictionName();
+			    + " no debería recetarse debido a su alergia: " + ar.getAllergyName();
 		    alert = new Alert(title, diseaseAllergyIntolerationAlert, aRecetar);
 		    diseaseAllergyIntolerationRestrictionReport.add(diseaseAllergyIntolerationRestrictionReport.size(),
 			    alert);
 		}
 	    }
-	    for (DiseaseRestriction dr : cc.getDiseaseRestrictions()) {
-		if (diseaseListNames.contains(dr.getDisease().getDiseaseName())) {
+	    for (Disease dr : cc.getDiseases()) {
+		if (diseaseListNames.contains(dr.getDiseaseName())) {
 		    title = "Restricciones con enfermedades";
 		    diseaseAllergyIntolerationAlert = "El componente químico (a recetar) " + cc.getComponentName()
-			    + " no debería recetarse debido a su enfermedad: " + dr.getRestrictionName();
+			    + " no debería recetarse debido a su enfermedad: " + dr.getDiseaseName();
 		    alert = new Alert(title, diseaseAllergyIntolerationAlert, aRecetar);
 		    diseaseAllergyIntolerationRestrictionReport.add(diseaseAllergyIntolerationRestrictionReport.size(),
 			    alert);
 		}
 	    }
-	    for (IntoleranceRestriction ir : cc.getIntoleranceRestrictions()) {
-		if (intoleranceListNames.contains(ir.getIntolerance().getIntoleranceName())) {
+	    for (Intolerance ir : cc.getIntolerances()) {
+		if (intoleranceListNames.contains(ir.getIntoleranceName())) {
 		    title = "Restricciones con intolerancias";
 		    diseaseAllergyIntolerationAlert = "El componente químico (a recetar) " + cc.getComponentName()
-			    + " no debería recetarse debido a su intolerancia: " + ir.getRestrictionName();
+			    + " no debería recetarse debido a su intolerancia: " + ir.getIntoleranceName();
 		    alert = new Alert(title, diseaseAllergyIntolerationAlert, aRecetar);
 		    diseaseAllergyIntolerationRestrictionReport.add(diseaseAllergyIntolerationRestrictionReport.size(),
 			    alert);

@@ -350,34 +350,6 @@ INSERT INTO RegularRestriction(code, restrictionName)
 	VALUES ("NUE","NO USO EMBARAZO");
 INSERT INTO RegularRestriction(code, restrictionName)
 	VALUES ("NUL","NO USO EN LACTANCIA");
-		
--- INSERT INTO DiseaseRestriction(code, restrictionName, diseaseId)
---	VALUES ();
-INSERT INTO DiseaseRestriction(code, restrictionName, diseaseId)
-	VALUES ("Reye","Sindrome de Reye",1);
-
--- INSERT INTO AllergyRestriction(code, restrictionName, allergyId)
---	VALUES ();
-INSERT INTO AllergyRestriction(code, restrictionName, allergyId)
-	VALUES ("Penicilina", "Penicilina", 1);
-		
--- INSERT INTO IntoleranceRestriction(code, restrictionName, intoleranceId)
---	VALUES ();
-INSERT INTO IntoleranceRestriction(code, restrictionName, intoleranceId)
-	VALUES ("Gastritis","Gastritis", 1);
-
--- INSERT INTO ComponentRestriction(code, restrictionName)
---	VALUES ();
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ("ADIF1","Ajuste de dósis por interacción farmacológica 1");
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ("ADIF2", "Ajuste de dósis por interacción farmacológica 2");
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ("ADIF3", "Ajuste de dósis por interacción farmacológica 3");
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ("ADIF4", "Ajuste de dósis por interacción farmacológica 4");
-INSERT INTO ComponentRestriction(code, restrictionName)
-	VALUES ("ADIF5","Ajuste de dósis por interacción farmacológica 5");
 
 -- INSERT INTO ChemicalComponent_RegularRestriction(componentId, regularRestrictionId)
 --	VALUES ();
@@ -402,38 +374,38 @@ INSERT INTO ChemicalComponent_RegularRestriction(chemicalComponent_id, regularRe
 INSERT INTO ChemicalComponent_RegularRestriction(chemicalComponent_id, regularRestriction_id)
 	VALUES (10,8);
 
--- INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
+-- INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
 --	VALUES ();
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (26,1);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (27,1);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (26,2);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (28,2);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (9,3);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (11,3);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (9,4);
-INSERT INTO ChemicalComponent_ComponentRestriction(chemicalComponent_id, componentRestriction_id)
-	VALUES (16,4);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (26,27);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (27,26);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (26,28);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (28,26);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (9,11);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (11,9);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (9,16);
+INSERT INTO ChemicalComponent_ChemicalComponent(chemicalComponent_id, chemicalComponent2_id)
+	VALUES (16,9);
 
--- INSERT INTO ChemicalComponent_DiseaseRestriction(chemicalComponent_id, diseaseRestriction_id)
+-- INSERT INTO ChemicalComponent_Disease(chemicalComponent_id, disease_id)
 --	VALUES ();
-INSERT INTO ChemicalComponent_DiseaseRestriction(chemicalComponent_id, diseaseRestriction_id)
+INSERT INTO ChemicalComponent_Disease(chemicalComponent_id, disease_id)
 	VALUES (29,1);
 
--- INSERT INTO ChemicalComponent_AllergyRestriction(chemicalComponent_id, allergyRestriction_id)
+-- INSERT INTO ChemicalComponent_Allergy(chemicalComponent_id, allergy_id)
 --	VALUES ();
-INSERT INTO ChemicalComponent_AllergyRestriction(chemicalComponent_id, allergyRestriction_id)
+INSERT INTO ChemicalComponent_Allergy(chemicalComponent_id, allergy_id)
 	VALUES (21,1);
 
--- INSERT INTO ChemicalComponent_IntoleranceRestriction(chemicalComponent_id, intoleranceRestriction_id)
+-- INSERT INTO ChemicalComponent_Intolerance(chemicalComponent_id, intolerance_id)
 --	VALUES ();
-INSERT INTO ChemicalComponent_IntoleranceRestriction(chemicalComponent_id, intoleranceRestriction_id)
+INSERT INTO ChemicalComponent_Intolerance(chemicalComponent_id, intolerance_id)
 	VALUES (11,1);
 
 -- INSERT INTO UserBD(userName, password, firstName, lastName, email, role)

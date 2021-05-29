@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<title>Intolerancias</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+	 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.jqueryui.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.jqueryui.css" />
+</head>
+<body>
+	<div class="div1">
+		<h1>Intolerancias</h1>
+	</div>
+  	<div style="float: left; width: 100%">
+  		<div class="divtable2">
+            <table id="intoleranceTable" class="center">
+                <thead>
+                <tr>
+                    <th class="thadjusted">
+                    </th>
+                    <th>Nombre</th>
+                </tr>
+                </thead>
+                <tbody>
+               		<tr th:each="intolerance : ${intolerances}">
+                    	<td class="thadjusted">
+                    		<div class="row">
+                    		<a th:href="@{'/administracion/intolerancias/eliminar/' + ${intolerance.code}}">
+                    			<img alt="Eliminar" src="/images/delete.png"
+         						width="20" height="20" style="margin:5% 0% 0% 0%">
+         					</a>
+                    		<a title="Editar"></a>
+                    		</div>
+                    	</td>
+                    	<td>
+                    		<div class="row">
+                    			<a th:href="@{'/administracion/intolerancias/editar/' + ${intolerance.code}}" th:text="${intolerance.intoleranceName}" style="color: white">
+                    			</a>
+                    		</div>
+                    	</td>
+                	</tr>
+                </tbody>
+            </table>
+		</div> 
+  	</div>
+</body>
+ <!--Required for Datatables to function-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.js"></script>
+   <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+   <!--Optional for Datatables to function-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.js"></script>
+
+   <!--Required for any Buttons to appear-->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.js"></script>
+    
+   <!--Required for Excel button to appear-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
+   
+   <!--Optional, breaks formatting on butons if jqueryui is used but this is not included-->
+   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.jqueryui.js"></script>
+
+<script>
+$(document).ready(function() {
+	$.fn.DataTable.ext.pager.numbers_length = 5;
+	
+	var intoleranceTable = $('#intoleranceTable').DataTable({
+		"dom": 'lBfrtiBp',
+        'buttons': ['excel',  {
+            text: 'Nuevo',
+            action: function ( e, dt, node, config ) {
+            		window.location = 'http://localhost:8080/administracion/intolerancias/nuevo';
+                }
+          	}
+        ],
+		"bLengthChange": false,
+        "lengthMenu": [10],
+		 "columnDefs": [ {
+			 "targets": 0,
+		     "orderable": false,
+		     "searchable": false
+		    } ],
+		"language": {
+			"processing": "Procesando...",
+		    "lengthMenu": "Mostrar _MENU_",
+		    "zeroRecords": "No se encontraron resultados",
+		    "emptyTable": "Ningún dato disponible en esta tabla",
+		    "infoEmpty": "",
+		    "infoFiltered": "",
+		    "search": "Buscar:",
+		    "infoThousands": ",",
+		    "loadingRecords": "Cargando...",
+		    "paginate": {
+		        "first": "Primero",
+		        "last": "Último",
+		        "next": "Siguiente",
+		        "previous": "Anterior"
+		    },
+		    "info": ""
+		}
+	});
+	
+});
+</script>
+</html>

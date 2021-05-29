@@ -2,14 +2,10 @@
 
 DROP TABLE MedicamentChemicalComponent;
 DROP TABLE ChemicalComponent_RegularRestriction;
-DROP TABLE ChemicalComponent_DiseaseRestriction;
-DROP TABLE ChemicalComponent_AllergyRestriction;
-DROP TABLE ChemicalComponent_IntoleranceRestriction;
-DROP TABLE ChemicalComponent_ComponentRestriction;
-DROP TABLE ComponentRestriction;
-DROP TABLE DiseaseRestriction;
-DROP TABLE AllergyRestriction;
-DROP TABLE IntoleranceRestriction;
+DROP TABLE ChemicalComponent_Disease;
+DROP TABLE ChemicalComponent_Allergy;
+DROP TABLE ChemicalComponent_Intolerance;
+DROP TABLE ChemicalComponent_ChemicalComponent;
 DROP TABLE RegularRestriction;
 DROP TABLE CommercialMedicament;
 DROP TABLE ChemicalComponent;
@@ -95,43 +91,6 @@ CREATE TABLE RegularRestriction (
 	CONSTRAINT RegularRestrictionPK PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
-CREATE TABLE DiseaseRestriction (
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	code VARCHAR(60) NOT NULL,
-	restrictionName VARCHAR(60) NOT NULL,
-	diseaseId BIGINT NOT NULL,
-	CONSTRAINT DiseaseRestrictionPK PRIMARY KEY (id),
-	CONSTRAINT DiseaseFK FOREIGN KEY (diseaseId)
-        REFERENCES Disease (id) ON DELETE CASCADE
-) ENGINE = InnoDB;
-
-CREATE TABLE AllergyRestriction (
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	code VARCHAR(60) NOT NULL,
-	restrictionName VARCHAR(60) NOT NULL,
-	allergyId BIGINT NOT NULL,
-	CONSTRAINT AllergyRestrictionPK PRIMARY KEY (id),
-	CONSTRAINT AllergyFK FOREIGN KEY (allergyId) 
-        REFERENCES Allergy (id) ON DELETE CASCADE
-) ENGINE = InnoDB;
-
-CREATE TABLE IntoleranceRestriction (
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	code VARCHAR(60) NOT NULL,
-	restrictionName VARCHAR(60) NOT NULL,
-	intoleranceId BIGINT NOT NULL,
-	CONSTRAINT IntoleranceRestrictionPK PRIMARY KEY (id),
-	CONSTRAINT IntoleranceFK FOREIGN KEY (intoleranceId) 
-        REFERENCES Intolerance (id) ON DELETE CASCADE
-) ENGINE = InnoDB;
-
-CREATE TABLE ComponentRestriction (
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	code VARCHAR(10) NOT NULL,
-	restrictionName VARCHAR(60) NOT NULL,
-	CONSTRAINT ChemicalComponentsRestrictionPK PRIMARY KEY (id)
-) ENGINE = InnoDB;
-
 CREATE TABLE ChemicalComponent_RegularRestriction (
 	chemicalComponent_id BIGINT NOT NULL,
 	regularRestriction_id BIGINT NOT NULL,
@@ -142,44 +101,44 @@ CREATE TABLE ChemicalComponent_RegularRestriction (
         REFERENCES RegularRestriction (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE ChemicalComponent_DiseaseRestriction (
+CREATE TABLE ChemicalComponent_Disease (
 	chemicalComponent_id BIGINT NOT NULL,
-	diseaseRestriction_id BIGINT NOT NULL,
-	CONSTRAINT ChemicalComponentDiseaseRestrictionPK PRIMARY KEY (chemicalComponent_id, diseaseRestriction_id),
-	CONSTRAINT DiseaseRestrictionChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
+	disease_id BIGINT NOT NULL,
+	CONSTRAINT ChemicalComponentDiseasePK PRIMARY KEY (chemicalComponent_id, disease_id),
+	CONSTRAINT DiseaseChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
         REFERENCES ChemicalComponent (id) ON DELETE CASCADE,
-	CONSTRAINT DiseaseRestrictionFK FOREIGN KEY (diseaseRestriction_id) 
-        REFERENCES DiseaseRestriction (id) ON DELETE CASCADE
+	CONSTRAINT DiseaseFK FOREIGN KEY (disease_id) 
+        REFERENCES Disease (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE ChemicalComponent_AllergyRestriction (
+CREATE TABLE ChemicalComponent_Allergy (
 	chemicalComponent_id BIGINT NOT NULL,
-	allergyRestriction_id BIGINT NOT NULL,
-	CONSTRAINT ChemicalComponentAllergyRestrictionPK PRIMARY KEY (chemicalComponent_id, allergyRestriction_id),
-	CONSTRAINT AllergyRestrictionChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
+	allergy_id BIGINT NOT NULL,
+	CONSTRAINT ChemicalComponentAllergyPK PRIMARY KEY (chemicalComponent_id, allergy_id),
+	CONSTRAINT AllergyChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
         REFERENCES ChemicalComponent (id) ON DELETE CASCADE,
-	CONSTRAINT AllergyRestrictionFK FOREIGN KEY (allergyRestriction_id) 
-        REFERENCES AllergyRestriction (id) ON DELETE CASCADE
+	CONSTRAINT AllergyFK FOREIGN KEY (allergy_id) 
+        REFERENCES Allergy (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE ChemicalComponent_IntoleranceRestriction (
+CREATE TABLE ChemicalComponent_Intolerance (
 	chemicalComponent_id BIGINT NOT NULL,
-	intoleranceRestriction_id BIGINT NOT NULL,
-	CONSTRAINT ChemicalComponentIntoleranceRestrictionPK PRIMARY KEY (chemicalComponent_id, intoleranceRestriction_id),
-	CONSTRAINT IntoleranceRestrictionChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
+	intolerance_id BIGINT NOT NULL,
+	CONSTRAINT ChemicalComponentIntolerancePK PRIMARY KEY (chemicalComponent_id, intolerance_id),
+	CONSTRAINT IntoleranceChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
         REFERENCES ChemicalComponent (id) ON DELETE CASCADE,
-	CONSTRAINT IntoleranceRestrictionFK FOREIGN KEY (intoleranceRestriction_id) 
-        REFERENCES IntoleranceRestriction (id) ON DELETE CASCADE
+	CONSTRAINT IntoleranceFK FOREIGN KEY (intolerance_id) 
+        REFERENCES Intolerance (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE ChemicalComponent_ComponentRestriction (
+CREATE TABLE ChemicalComponent_ChemicalComponent (
 	chemicalComponent_id BIGINT NOT NULL,
-	componentRestriction_id BIGINT NOT NULL,
-	CONSTRAINT ChemicalComponentComponentRestrictionPK PRIMARY KEY (chemicalComponent_id, componentRestriction_id),
-	CONSTRAINT ComponentRestrictionChemicalComponentFK FOREIGN KEY (chemicalComponent_id) 
+	chemicalComponent2_id BIGINT NOT NULL,
+	CONSTRAINT ChemicalComponentChemicalComponentPK PRIMARY KEY (chemicalComponent_id, chemicalComponent2_id),
+	CONSTRAINT ChemicalComponent1FK FOREIGN KEY (chemicalComponent_id) 
         REFERENCES ChemicalComponent (id) ON DELETE CASCADE,
-	CONSTRAINT ComponentRestrictionFK FOREIGN KEY (componentRestriction_id) 
-        REFERENCES ComponentRestriction (id) ON DELETE CASCADE
+	CONSTRAINT ChemicalComponent2FK FOREIGN KEY (chemicalComponent2_id) 
+        REFERENCES ChemicalComponent (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE UserBD (

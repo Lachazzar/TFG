@@ -165,6 +165,36 @@ $(document).ready(function() {
 		}
 	});
 	
+	med1Table.on('click', 'input', function(e){
+		var radio = med2Table.$('input[type="radio"]');
+		if (this.checked){
+			if (!(typeof radio.get(0) === "undefined")){
+				for (var i=0; i<radio.length; i++) {
+					if(radio.get(i).checked){
+						var found = radio.get(i);
+						if (this.value == found.value){
+							radio.prop("checked", false);
+						}	
+					}
+				}
+			}
+		}
+	});
+	
+	med2Table.on('click', 'input', function(e){
+		var checkbox =  med1Table.$('input[type="checkbox"]');
+		if (!(typeof checkbox.get(0) === "undefined")){
+			for (var i=0; i<checkbox.length; i++) {
+				if(checkbox.get(i).checked){
+					var found = checkbox.get(i);
+					if(this.value == found.value){
+						$(found).prop("checked", false);
+					}	
+				}
+			}
+		}
+	});
+	
 	$("form").on('submit', function(e){
 		   var $form = $(this);
 		   

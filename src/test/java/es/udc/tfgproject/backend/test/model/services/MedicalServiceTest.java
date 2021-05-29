@@ -376,7 +376,7 @@ public class MedicalServiceTest {
 
 	String title = "Restricciones entre componentes químicos";
 	boolean aRecetar = true;
-	String chemicalComponentRestrictionAlert = "El componente químico (a recetar) Omeprazol no debería recetarse mientras esté vigente el componente químico (ya recetado) Clopridogel";
+	String chemicalComponentRestrictionAlert = "Uno de los componentes químicos Omeprazol o Clopridogel no debería administrarse mientras permanezca vigente el otro";
 	Alert alert = new Alert(title, chemicalComponentRestrictionAlert, aRecetar);
 	resultCompare.add(resultCompare.size(), alert);
 
@@ -420,7 +420,7 @@ public class MedicalServiceTest {
 
 	String title = "Restricciones entre componentes químicos";
 	boolean aRecetar = false;
-	String chemicalComponentRestrictionAlert = "Uno de los componentes químicos (ya recetados) Omeprazol o Clopridogel no debería administrarse mientras permanezca vigente el otro";
+	String chemicalComponentRestrictionAlert = "Uno de los componentes químicos Omeprazol o Clopridogel no debería administrarse mientras permanezca vigente el otro";
 	Alert alert = new Alert(title, chemicalComponentRestrictionAlert, aRecetar);
 	resultCompare.add(resultCompare.size(), alert);
 
@@ -772,7 +772,7 @@ public class MedicalServiceTest {
 	resultCompare.add(resultCompare.size(), alert);
 
 	title = "Restricciones entre componentes químicos";
-	String chemicalComponentRestrictionAlert = "Uno de los componentes químicos (ya recetados) Omeprazol o Clopridogel no debería administrarse mientras permanezca vigente el otro";
+	String chemicalComponentRestrictionAlert = "Uno de los componentes químicos Omeprazol o Clopridogel no debería administrarse mientras permanezca vigente el otro";
 	alert = new Alert(title, chemicalComponentRestrictionAlert, aRecetar);
 	resultCompare.add(resultCompare.size(), alert);
 

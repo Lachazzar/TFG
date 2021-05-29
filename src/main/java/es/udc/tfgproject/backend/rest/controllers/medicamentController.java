@@ -58,14 +58,14 @@ public class medicamentController {
 	if (medicament.getMedicamentName() == null || medicament.getMedicamentName() == "") {
 	    model.addAttribute("title", "Nuevo medicamento");
 	    model.addAttribute("err", "No se ha encontrado el medicamento, si guarda se insertará uno nuevo");
-	    model.addAttribute("medicament", medicament);
 	    return "admin/medicamentDetails";
 	} else {
 	    model.addAttribute("title", "Detalle medicamento");
-	    model.addAttribute("medicament", medicament);
 	    model.addAttribute("oldMedicamentName", medicament.getMedicamentName());
+	    model.addAttribute("code", code);
 	}
 
+	model.addAttribute("medicament", medicament);
 	ArrayList<ChemicalComponentDto> chemicalComponentsList = listService.listAllChemicalComponentsDto();
 
 	model.addAttribute("components", chemicalComponentsList);
@@ -91,19 +91,29 @@ public class medicamentController {
     @PostMapping("/guardar")
     public String saveComponent(@ModelAttribute("medicament") MedicamentExtendedDto medicamentDto,
 	    @RequestParam(value = "oldMedicamentName", required = false) String oldMedicamentName,
+	    @RequestParam(value = "code", required = false) String code,
 	    @RequestParam(value = "componentsL", required = false) String[] componentsL, Model model) {
 
 	Boolean hasError = listService.checkAndSaveMedicament(oldMedicamentName, medicamentDto.getMedicamentName(),
 		componentsL);
 
 	if (hasError) {
+	    ArrayList<ChemicalComponentDto> chemicalComponentsList = listService.listAllChemicalComponentsDto();
+
+	    model.addAttribute("components", chemicalComponentsList);
 	    model.addAttribute("err", "Ya existe un medicamento con ese nombre");
+	    MedicamentExtendedDto medicament = new MedicamentExtendedDto();
 	    if (oldMedicamentName == "") {
 		model.addAttribute("title", "Nuevo Medicamento");
 	    } else {
 		model.addAttribute("title", "Detalle Medicamento");
-		model.addAttribute("medicament", medicamentDto);
+		medicament = listService.getMedicamentByCode(code);
+		model.addAttribute("medicament", medicament);
+		model.addAttribute("oldMedicamentName", oldMedicamentName);
+		model.addAttribute("code", code);
 	    }
+	    medicament.setMedicamentName(medicamentDto.getMedicamentName());
+	    model.addAttribute("medicament", medicament);
 	    return "admin/medicamentDetails";
 	}
 

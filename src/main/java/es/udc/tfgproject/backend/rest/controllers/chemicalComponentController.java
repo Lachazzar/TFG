@@ -72,6 +72,7 @@ public class chemicalComponentController {
 	    model.addAttribute("title", "Detalle componente");
 	    model.addAttribute("component", component);
 	    model.addAttribute("oldComponentName", component.getComponentName());
+	    model.addAttribute("code", code);
 	}
 
 	ArrayList<FamilyDto> familiesList = listService.listAllFamiliesDto();
@@ -79,7 +80,8 @@ public class chemicalComponentController {
 	ArrayList<DiseaseDto> diseasesList = listService.listAllDiseasesDto();
 	ArrayList<AllergyDto> allergiesList = listService.listAllAllergiesDto();
 	ArrayList<IntoleranceDto> intolerancesList = listService.listAllIntolerancesDto();
-	ArrayList<ChemicalComponentDto> chemicalComponentsList = listService.listAllChemicalComponentsDto();
+	ArrayList<ChemicalComponentDto> chemicalComponentsList = listService
+		.listAllChemicalComponentsDtoExceptComponent(code);
 
 	model.addAttribute("families", familiesList);
 	model.addAttribute("rRestrictions", rRestrictionsList);
@@ -119,6 +121,7 @@ public class chemicalComponentController {
     @PostMapping("/guardar")
     public String saveComponent(@ModelAttribute("component") ChemicalComponentCompleteDto componentDto,
 	    @RequestParam(value = "oldComponentName", required = false) String oldComponentName,
+	    @RequestParam(value = "code", required = false) String code,
 	    @RequestParam(value = "componentsL", required = false) String[] componentsL,
 	    @RequestParam(value = "intolerancesL", required = false) String[] intolerancesL,
 	    @RequestParam(value = "allergiesL", required = false) String[] allergiesL,
@@ -130,13 +133,33 @@ public class chemicalComponentController {
 		family, componentsL, intolerancesL, allergiesL, diseasesL, rRestrictionsL);
 
 	if (hasError) {
+	    ArrayList<FamilyDto> familiesList = listService.listAllFamiliesDto();
+	    List<RegularRestriction> rRestrictionsList = listService.listAllRegularRestrictions();
+	    ArrayList<DiseaseDto> diseasesList = listService.listAllDiseasesDto();
+	    ArrayList<AllergyDto> allergiesList = listService.listAllAllergiesDto();
+	    ArrayList<IntoleranceDto> intolerancesList = listService.listAllIntolerancesDto();
+	    model.addAttribute("families", familiesList);
+	    model.addAttribute("rRestrictions", rRestrictionsList);
+	    model.addAttribute("diseases", diseasesList);
+	    model.addAttribute("allergies", allergiesList);
+	    model.addAttribute("intolerances", intolerancesList);
 	    model.addAttribute("err", "Ya existe un componente con ese nombre");
+	    ChemicalComponentCompleteDto component = new ChemicalComponentCompleteDto();
+	    ArrayList<ChemicalComponentDto> chemicalComponentsList = new ArrayList<ChemicalComponentDto>();
 	    if (oldComponentName == "") {
 		model.addAttribute("title", "Nuevo Componente");
+		chemicalComponentsList = listService.listAllChemicalComponentsDto();
 	    } else {
 		model.addAttribute("title", "Detalle Componente");
 		model.addAttribute("component", componentDto);
+		chemicalComponentsList = listService.listAllChemicalComponentsDtoExceptComponent(code);
+		component = listService.getChemicalComponentByCode(code);
+		model.addAttribute("code", code);
+		model.addAttribute("oldComponentName", oldComponentName);
 	    }
+	    model.addAttribute("components", chemicalComponentsList);
+	    component.setComponentName(componentDto.getComponentName());
+	    model.addAttribute("component", component);
 	    return "admin/componentDetails";
 	}
 

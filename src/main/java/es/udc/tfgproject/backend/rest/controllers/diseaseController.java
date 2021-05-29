@@ -92,6 +92,7 @@ public class diseaseController {
 	    } else {
 		model.addAttribute("title", "Detalle Enfermedad");
 		model.addAttribute("disease", diseaseDto);
+		model.addAttribute("oldDiseaseName", oldDiseaseName);
 	    }
 	    return "admin/diseaseDetails";
 	}
