@@ -7,6 +7,10 @@
 	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
+	<nav>
+		<div th:insert="fragments/menu">
+		</div>
+	</nav>
 	<div class="div1">
 		<h1 th:text=${title}></h1>
 	</div>
@@ -18,7 +22,7 @@
 		</div>
 		<!-- OCULTOS -->
         <input type="hidden" id="oldDiseaseName" name="oldDiseaseName" th:value="${oldDiseaseName}"/>
-		<div class="div2" style="float: left; width: 40%; margin: 0% 0% 0% 10%">
+		<div class="div2" style="float: left; width: 20%; margin: 0% 0% 0% 10%">
 			<label class="col-form-label-sm" for="nombre">Nombre</label>
            	<input th:field="*{diseaseName}" th:title="diseaseName"
            	class="form-control form-control-sm" 

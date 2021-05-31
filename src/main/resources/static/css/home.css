@@ -23,8 +23,13 @@ body{
     background-size: calc(100vw) calc(100vh);
 }
 
-div {
-  margin: 50px 50px 75px 100px;
+.navbar .nav .active,
+.navbar .nav .active > a,
+.navbar .nav .active > a:hover,
+.navbar .navbar-nav > li.open > a:hover,
+.navbar .navbar-nav > li.open > a:focus {
+    color: white; 
+    background-color: #818fe8;
 }
 
 .enlace {

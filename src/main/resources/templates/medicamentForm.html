@@ -6,6 +6,10 @@
 	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
+	<nav>
+		<div th:insert="fragments/menu">
+		</div>
+	</nav>
 	<div class="div1">
 		<h1>Medicamentos</h1>
 	</div>
@@ -91,14 +95,14 @@
         	<div class="div2" style="float: left; width: 40%;">
         		<div style="margin: 4% 0% 4% 15%">
         			<br>
-        			<label class="container">Comprobar medicamentos ya recetados
+        			<label class="container">&nbsp; Comprobar medicamentos ya recetados
 						<input id="compRecetados" type="checkbox" name="compRecetados"/>
 						<span class="checkmark"></span>
 					</label>
         		</div>
         	</div>
 	    </div>
-		<div style="float: left; width: 100%; margin: 0% 0% 5% 44%;">
+		<div style="float: left; width: 50%; margin: 0% 0% 5% 44%;">
 			<button type="submit" class="myButton">Finalizar</button>
 		</div>	
 	</form>

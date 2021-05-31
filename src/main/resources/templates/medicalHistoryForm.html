@@ -4,8 +4,13 @@
     <title>HistoryForm</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+  	
 </head>
 <body>
+	<nav>
+		<div th:insert="fragments/menu">
+		</div>
+	</nav>
 	<div class="div1">
 		<h1>Historial Médico</h1>
 	</div>
@@ -24,7 +29,7 @@
 	        	<div class="div3">
 	        		<br>
 	        		<label class="col-form-label-sm" for="edad">Edad</label>
-	            	<input style="margin: 0% 0% 0% 25%" th:field="*{edad}" th:title="Edad"
+	            	<input style="margin: 0% 0% 0% 2%" th:field="*{edad}" th:title="Edad"
 	            	class="form-control form-control-sm" 
 	            	id="edad" type="number" maxlength="3" required min="1" autofocus>
 	        	</div>
@@ -36,14 +41,14 @@
 	        	</div>
 	        	<div id="femenino" class="fem" style="display: none;">
 	        		<div class="div3">
-	        	 		<label class="container">Embarazo
+	        	 		<label class="container">&nbsp; Embarazo
 	  						<input id="embarazo" type="checkbox" name="embarazo" th:checked="${embarazo}" th:field="*{embarazo}"/>
 	  						<span class="checkmark"></span>
 						</label>
 	        		</div>
 	        	
 	        		<div class="div3">
-	        	 		<label class="container">Lactancia
+	        	 		<label class="container">&nbsp; Lactancia
 	  						<input id="lactancia" type="checkbox" name="lactancia" th:checked="${lactancia}" th:field="*{lactancia}"/>
 	  						<span class="checkmark"></span>
 						</label>
@@ -56,7 +61,7 @@
 	            	id="glomerularFiltration" type="number" maxlength="4" required>
 	        	</div>
 	        	<div class="div3">
-	        		<label class="container">Hepatopatía
+	        		<label class="container">&nbsp; Hepatopatía
 	  						<input id="liverFailure" type="checkbox" name="liverFailure" th:checked="${liverFailure}" th:field="*{liverFailure}"/>
 	  						<span class="checkmark"></span>
 						</label>
