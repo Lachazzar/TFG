@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head> 
     <title>HistoryForm</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -14,6 +14,25 @@
 	<div class="div1">
 		<h1>Historial Médico</h1>
 	</div>
+	<div sec:authorize="hasRole('USER')">
+		<div class="divdni">
+			<form action="#" th:action="@{/medical/historyFormJsonLoad}" th:object="${dni}" method="post">
+				<div class="row" style="width: 100%">
+					<div class="row" style="margin: -4% 2% 1% 5%;  width: 50%; float: left" >
+			       		<br>
+			       		<label class="col-form-label-sm" for="edad">Buscar por DNI</label>
+			           	<input style="margin: 0% 0% 0% 2%" th:title="dni"
+			           	class="form-control form-control-sm" 
+			           	id="dni" type="text" maxlength="9" minlength="9" th:field="*{dni}" required>
+			       	</div>
+			       	<div class="row" style="margin: 6% 0% 1% 11%; float: left">
+						<button type="submit" class="myButton">Buscar</button>
+					</div>
+				</div>
+			</form>	
+		</div>
+	</div>
+
 	<form action="#" th:action="@{/medical/medicamentForm}" th:object="${history}" method="post">
 		 <!-- OCULTOS -->
 		 <div style="display: none;">

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import es.udc.tfgproject.backend.model.entities.Sexo;
 
-public class MedicalHistoryDto {
+public class MedicalHistoryJsonDto {
 
     private int edad;
     private Sexo sexo;
@@ -12,18 +12,18 @@ public class MedicalHistoryDto {
     private boolean lactancia;
     private int glomerularFiltration;
     private boolean liverFailure;
-    private ArrayList<TreatmentDto> actualTreatments;
-    private ArrayList<AllergyDto> allergies;
-    private ArrayList<DiseaseDto> diseases;
-    private ArrayList<IntoleranceDto> intolerances;
+    private ArrayList<String> actualTreatments;
+    private ArrayList<String> allergies;
+    private ArrayList<String> diseases;
+    private ArrayList<String> intolerances;
 
-    public MedicalHistoryDto() {
+    public MedicalHistoryJsonDto() {
 
     }
 
-    public MedicalHistoryDto(int edad, Sexo sexo, boolean embarazo, boolean lactancia, int glomerularFiltration,
-	    boolean liverFailure, ArrayList<TreatmentDto> actualTreatments, ArrayList<AllergyDto> allergies,
-	    ArrayList<DiseaseDto> diseases, ArrayList<IntoleranceDto> intolerances) {
+    public MedicalHistoryJsonDto(int edad, Sexo sexo, boolean embarazo, boolean lactancia, int glomerularFiltration,
+	    boolean liverFailure, ArrayList<String> actualTreatments, ArrayList<String> allergies,
+	    ArrayList<String> diseases, ArrayList<String> intolerances) {
 	this.edad = edad;
 	this.sexo = sexo;
 	this.embarazo = embarazo;
@@ -84,35 +84,35 @@ public class MedicalHistoryDto {
 	this.liverFailure = liverFailure;
     }
 
-    public final ArrayList<TreatmentDto> getActualTreatments() {
+    public final ArrayList<String> getActualTreatments() {
 	return actualTreatments;
     }
 
-    public final void setActualTreatments(ArrayList<TreatmentDto> actualTreatments) {
+    public final void setActualTreatments(ArrayList<String> actualTreatments) {
 	this.actualTreatments = actualTreatments;
     }
 
-    public final ArrayList<AllergyDto> getAllergies() {
+    public final ArrayList<String> getAllergies() {
 	return allergies;
     }
 
-    public final void setAllergies(ArrayList<AllergyDto> allergies) {
+    public final void setAllergies(ArrayList<String> allergies) {
 	this.allergies = allergies;
     }
 
-    public final ArrayList<DiseaseDto> getDiseases() {
+    public final ArrayList<String> getDiseases() {
 	return diseases;
     }
 
-    public final void setDiseases(ArrayList<DiseaseDto> diseases) {
+    public final void setDiseases(ArrayList<String> diseases) {
 	this.diseases = diseases;
     }
 
-    public final ArrayList<IntoleranceDto> getIntolerances() {
+    public final ArrayList<String> getIntolerances() {
 	return intolerances;
     }
 
-    public final void setIntolerances(ArrayList<IntoleranceDto> intolerances) {
+    public final void setIntolerances(ArrayList<String> intolerances) {
 	this.intolerances = intolerances;
     }
 

@@ -5,24 +5,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import es.udc.tfgproject.backend.model.services.UserServiceImpl;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserServiceImpl userDetailsService;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
 	return new BCryptPasswordEncoder();
     }
 
@@ -32,18 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	auth.authenticationEventPublisher(authenticationEventPublisher());
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-	web.ignoring().antMatchers("/css/").antMatchers("/images/");
-
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-	http.authorizeRequests().anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and()
-		.logout().permitAll();
-//	.antMatchers("/administracion", "/administracion/**").hasRole("ADMIN")
-    }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//	http.authorizeRequests().anyRequest().permitAll();
+//
+//	// "/", "/home", "/medical/*" -> permitir a los usuarios no autenticados y a los
+//	// autenticados
+//	// "/administracion/*" -> permitir a los admins
+//    }
 
     @Bean
     public DefaultAuthenticationEventPublisher authenticationEventPublisher() {

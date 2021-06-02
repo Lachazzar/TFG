@@ -1,5 +1,6 @@
 package es.udc.tfgproject.backend.rest.controllers;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import es.udc.tfgproject.backend.model.entities.Alert;
 import es.udc.tfgproject.backend.model.entities.Sexo;
@@ -27,8 +31,11 @@ import es.udc.tfgproject.backend.model.services.MedicalService;
 import es.udc.tfgproject.backend.rest.dtos.AllergyDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentDto;
 import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
+import es.udc.tfgproject.backend.rest.dtos.DniDto;
 import es.udc.tfgproject.backend.rest.dtos.IntoleranceDto;
 import es.udc.tfgproject.backend.rest.dtos.MedicalHistoryDto;
+import es.udc.tfgproject.backend.rest.dtos.MedicalHistoryJsonDto;
+import es.udc.tfgproject.backend.rest.dtos.MedicalInfoJsonDto;
 import es.udc.tfgproject.backend.rest.dtos.MedicamentDto;
 import es.udc.tfgproject.backend.rest.dtos.TreatmentDto;
 
@@ -68,6 +75,9 @@ public class medicalController {
 
 	MedicalHistoryDto history = new MedicalHistoryDto(0, null, false, false, 0, false, null, null, null, null);
 
+	DniDto dni = new DniDto();
+
+	model.addAttribute("dni", dni);
 	model.addAttribute("history", history);
 	model.addAttribute("sexos", sexos);
 	model.addAttribute("allergies", allergiesList);
@@ -142,6 +152,86 @@ public class medicalController {
 	    historyDto.setActualTreatments(medicaments);
 	}
 
+	DniDto dni = new DniDto();
+
+	model.addAttribute("dni", dni);
+	model.addAttribute("history", historyDto);
+	model.addAttribute("sexos", sexos);
+	model.addAttribute("allergies", allergiesList);
+	model.addAttribute("diseases", diseasesList);
+	model.addAttribute("intolerances", intolerancesList);
+
+	return "medicalHistoryForm";
+    }
+
+    @PostMapping("/historyFormJsonLoad")
+    public String jsonLoad(@ModelAttribute("dni") DniDto dni, Model model) throws URISyntaxException {
+
+	List<Sexo> sexos = Arrays.asList(Sexo.values());
+
+	ArrayList<DiseaseDto> diseasesList = new ArrayList<DiseaseDto>();
+	ArrayList<AllergyDto> allergiesList = new ArrayList<AllergyDto>();
+	ArrayList<IntoleranceDto> intolerancesList = new ArrayList<IntoleranceDto>();
+
+	ArrayList<DiseaseDto> diseases = new ArrayList<DiseaseDto>();
+	ArrayList<AllergyDto> allergies = new ArrayList<AllergyDto>();
+	ArrayList<IntoleranceDto> intolerances = new ArrayList<IntoleranceDto>();
+	ArrayList<TreatmentDto> medicaments = new ArrayList<TreatmentDto>();
+
+	listService.listAllDiseases().forEach(d -> {
+	    DiseaseDto disease = new DiseaseDto(d.getDiseaseName());
+	    diseasesList.add(disease);
+	});
+
+	listService.listAllAllergies().forEach(a -> {
+	    AllergyDto allergy = new AllergyDto(a.getAllergyName());
+	    allergiesList.add(allergy);
+	});
+
+	listService.listAllIntolerances().forEach(i -> {
+	    IntoleranceDto intolerance = new IntoleranceDto(i.getIntoleranceName());
+	    intolerancesList.add(intolerance);
+	});
+
+	RestTemplate restTemplate = new RestTemplate();
+
+	final String baseUrl = "http://localhost:8081/dniParser/" + dni.getDni();
+
+	MedicalHistoryJsonDto jsonInfo = restTemplate.getForEntity(baseUrl, MedicalHistoryJsonDto.class).getBody();
+
+	if (jsonInfo.getDiseases() != null) {
+	    jsonInfo.getDiseases().forEach(d -> {
+		DiseaseDto disease = new DiseaseDto(d);
+		diseases.add(disease);
+	    });
+	}
+
+	if (jsonInfo.getAllergies() != null) {
+	    jsonInfo.getAllergies().forEach(a -> {
+		AllergyDto allergy = new AllergyDto(a);
+		allergies.add(allergy);
+	    });
+	}
+
+	if (jsonInfo.getIntolerances() != null) {
+	    jsonInfo.getIntolerances().forEach(i -> {
+		IntoleranceDto intolerance = new IntoleranceDto(i);
+		intolerances.add(intolerance);
+	    });
+	}
+
+	if (jsonInfo.getActualTreatments() != null) {
+	    jsonInfo.getActualTreatments().forEach(t -> {
+		TreatmentDto treatment = new TreatmentDto(t);
+		medicaments.add(treatment);
+	    });
+	}
+
+	MedicalHistoryDto historyDto = new MedicalHistoryDto(jsonInfo.getEdad(), jsonInfo.getSexo(),
+		jsonInfo.isEmbarazo(), jsonInfo.isLactancia(), jsonInfo.getGlomerularFiltration(),
+		jsonInfo.isLiverFailure(), medicaments, allergies, diseases, intolerances);
+
+	model.addAttribute("dni", dni);
 	model.addAttribute("history", historyDto);
 	model.addAttribute("sexos", sexos);
 	model.addAttribute("allergies", allergiesList);
@@ -354,6 +444,51 @@ public class medicalController {
 	model.addAttribute("alerts", alerts);
 	model.addAttribute("alertsEmpty", alertsEmpty);
 	return "results";
+    }
+
+    @PostMapping("/resultsJson")
+    @ResponseBody
+    public List<Alert> results(@RequestBody MedicalInfoJsonDto jsonInfo) throws InstanceNotFoundException {
+
+	ArrayList<Treatment> medicaments = new ArrayList<Treatment>();
+	Treatment treatment = null;
+
+	if (jsonInfo.getMedRecet() != null && jsonInfo.getMedRecet() != "") {
+	    treatment = new Treatment(jsonInfo.getMedRecet());
+	}
+
+	ArrayList<Allergy> allergies = new ArrayList<Allergy>();
+	ArrayList<Disease> diseases = new ArrayList<Disease>();
+	ArrayList<Intolerance> intolerances = new ArrayList<Intolerance>();
+
+	if (jsonInfo.getDiseases() != null) {
+	    jsonInfo.getDiseases().forEach(d -> {
+		Disease disease = new Disease(d);
+		diseases.add(disease);
+	    });
+	}
+
+	if (jsonInfo.getAllergies() != null) {
+	    jsonInfo.getAllergies().forEach(a -> {
+		Allergy allergy = new Allergy(a);
+		allergies.add(allergy);
+	    });
+	}
+
+	if (jsonInfo.getIntolerances() != null) {
+	    jsonInfo.getIntolerances().forEach(i -> {
+		Intolerance intolerance = new Intolerance(i);
+		intolerances.add(intolerance);
+	    });
+	}
+
+	MedicalHistory history = new MedicalHistory(jsonInfo.getEdad(), jsonInfo.getSexo(), jsonInfo.isEmbarazo(),
+		jsonInfo.isLactancia(), jsonInfo.getGlomerularFiltration(), jsonInfo.isLiverFailure(), medicaments,
+		allergies, diseases, intolerances);
+
+	List<Alert> alerts = medicalService.completeReport(history, treatment, jsonInfo.getCompRecetados());
+
+	return alerts;
     }
 
 }
