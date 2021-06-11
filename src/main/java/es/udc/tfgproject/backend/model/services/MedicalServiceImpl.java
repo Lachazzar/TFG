@@ -352,7 +352,13 @@ public class MedicalServiceImpl implements MedicalService {
 	String chemicalComponentsInteractionAlert = null;
 	Alert alert = null;
 
-	List<ChemicalComponent> totalList = actualList;
+	List<ChemicalComponent> totalList = new ArrayList<ChemicalComponent>();
+
+	for (ChemicalComponent cc : actualList) {
+	    if (!totalList.contains(cc)) {
+		totalList.add(cc);
+	    }
+	}
 
 	for (ChemicalComponent cnew : newList) {
 	    if (!totalList.contains(cnew)) {

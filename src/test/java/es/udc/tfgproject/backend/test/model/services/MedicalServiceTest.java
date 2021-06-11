@@ -600,7 +600,7 @@ public class MedicalServiceTest {
 
 	Treatment treatment = new Treatment("Ibuprofeno");
 
-	List<Alert> result = medicalService.completeReport(history, treatment, true);
+	List<Alert> result = medicalService.completeReport(history, treatment, false);
 
 	List<Alert> resultCompare = new ArrayList<>();
 
@@ -696,7 +696,7 @@ public class MedicalServiceTest {
 
 	Treatment treatment = new Treatment("Aspirina");
 
-	List<Alert> result = medicalService.completeReport(history, treatment, true);
+	List<Alert> result = medicalService.completeReport(history, treatment, false);
 
 	List<Alert> resultCompare = new ArrayList<>();
 
@@ -798,6 +798,9 @@ public class MedicalServiceTest {
 	resultCompareArray.addAll(resultCompare);
 
 	System.out.println("testDiseaseReportARecetar");
+	for (int i = 0; i < resultArray.size(); i++) {
+	    System.out.println("Result: " + resultArray.get(i).getMessage());
+	}
 	assertEquals(resultArray.size(), resultCompareArray.size());
 	for (int i = 0; i < resultArray.size(); i++) {
 	    System.out.println("Result: " + resultArray.get(i).getMessage());
