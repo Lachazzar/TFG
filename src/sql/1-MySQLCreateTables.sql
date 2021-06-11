@@ -1,6 +1,6 @@
 -- Indexes for primary keys have been explicitly created.
 
-DROP TABLE MedicamentChemicalComponent;
+DROP TABLE Medicament_ChemicalComponent;
 DROP TABLE ChemicalComponent_RegularRestriction;
 DROP TABLE ChemicalComponent_Disease;
 DROP TABLE ChemicalComponent_Allergy;
@@ -53,13 +53,13 @@ CREATE TABLE ChemicalComponent (
 
 CREATE INDEX ChemicalComponentByName ON ChemicalComponent (componentName);
 
-CREATE TABLE MedicamentChemicalComponent (
-	medicamentId BIGINT NOT NULL,
-	componentId BIGINT NOT NULL,
-	CONSTRAINT MedicamentChemicalComponentPK PRIMARY KEY (medicamentId, componentId),
-	CONSTRAINT MedicamentChemicalComponentFK FOREIGN KEY (componentId) 
+CREATE TABLE Medicament_ChemicalComponent (
+	medicament_id BIGINT NOT NULL,
+	component_id BIGINT NOT NULL,
+	CONSTRAINT MedicamentChemicalComponentPK PRIMARY KEY (medicament_id, component_id),
+	CONSTRAINT MedicamentChemicalComponentFK FOREIGN KEY (component_id) 
         REFERENCES ChemicalComponent (id) ON DELETE CASCADE,
-	CONSTRAINT ChemicalComponentMedicamentFK FOREIGN KEY (medicamentId) 
+	CONSTRAINT ChemicalComponentMedicamentFK FOREIGN KEY (medicament_id) 
         REFERENCES Medicament (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 

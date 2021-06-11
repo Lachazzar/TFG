@@ -248,73 +248,73 @@ INSERT INTO ChemicalComponent(componentName, familyId)
 INSERT INTO ChemicalComponent(componentName, familyId)
 	VALUES ("Fenitoína sódica", 18);	
 		
--- INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+-- INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 --	VALUES ();
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (1, 1);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (2, 2);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (3, 2);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (4, 3);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (5, 3);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (5, 4);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (6, 5);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (7, 6);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (8, 7);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (9, 8);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (10, 9);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (11, 10);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (12, 11);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (13, 12);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (14, 13);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (15, 14);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (16, 15);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (17, 17);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (18, 11);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (19, 18);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (20, 19);		
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (22, 20);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (21, 21);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (23, 22);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (24, 23);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (25, 24);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (26, 25);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (27, 26);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (28, 27);		
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (29, 28);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (30, 29);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (31, 30);
-INSERT INTO MedicamentChemicalComponent(medicamentId, componentId)
+INSERT INTO Medicament_ChemicalComponent(medicament_id, component_id)
 	VALUES (32, 16);
 		
 -- INSERT INTO Disease(diseaseName)
@@ -411,9 +411,9 @@ INSERT INTO ChemicalComponent_Intolerance(chemicalComponent_id, intolerance_id)
 -- INSERT INTO UserBD(userName, password, firstName, lastName, email, role)
 -- VALUES ();
 INSERT INTO UserBD(userName, password, email, role)
-  VALUES("admin", "{bcrypt}$2a$10$cMSAZ6v96AuEI/4gUq.zA.Xm53JsFuNAhVF1G0xLXD8MAttE43z/G", "email@email", 1);
+  VALUES("admin", "{bcrypt}$2a$10$AVaWqpSEsBYP0r3/brOAXOZua5/qxe/5xQiJzmdAcNoJRm/zDkMAS", "email@email", 1);
 
 INSERT INTO UserBD(userName, password, email, role)
-  VALUES("user", "{bcrypt}$2a$10$cgmTa/J1A.lu1uJFnrxbvuRo5lNW/XWq44bI0o3ELbt5FizVtIPW.", "email@email", 0);
+  VALUES("user", "{bcrypt}$2a$10$.h2M1DzrEHo.ONO54jDsOeCLQwPNeN5aEa6F/dX5pnu6T88hoA2jG", "email@email", 0);
 
 

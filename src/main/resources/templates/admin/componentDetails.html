@@ -365,6 +365,29 @@ $(document).ready(function() {
 		}
 	});
 	
+	var famSelected = '[[${component.family.familyName}]]';
+	var radio = familyTable.$('input[type="radio"]');
+	for (var i=0; i<radio.length; i++) {
+		var found = radio.get(i);
+		if (famSelected == found.value){
+			$(found).prop("checked", true);
+		} else {
+			$(found).prop("checked", false);
+		}
+	}
+	
+	familyTable.on('click', 'input', function(e){
+		var radio = familyTable.$('input[type="radio"]');
+		for (var i=0; i<radio.length; i++) {
+			if(radio.get(i).checked){
+				var found = radio.get(i);
+				if (this.value != found.value){
+					radio.prop("checked", false);
+				}
+			}
+		}
+	});
+	
 	$("form").on('submit', function(e){
 		   var $form = $(this);
 			
@@ -476,10 +499,6 @@ $(document).ready(function() {
 
  <script th:inline="javascript">
       // <![CDATA[
-    	  
-        var familySelected = /*[[${component.family.code}]]*/;
-        var familyCode = "#"+familySelected;
-        $(familyCode).prop( "checked", true );
         
         var restrictions = /*[[${component.regularRestrictions}]]*/ [];
         if (restrictions != null){

@@ -29,15 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	auth.authenticationEventPublisher(authenticationEventPublisher());
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//	http.authorizeRequests().anyRequest().permitAll();
-//
-//	// "/", "/home", "/medical/*" -> permitir a los usuarios no autenticados y a los
-//	// autenticados
-//	// "/administracion/*" -> permitir a los admins
-//    }
-
     @Bean
     public DefaultAuthenticationEventPublisher authenticationEventPublisher() {
 	return new DefaultAuthenticationEventPublisher();

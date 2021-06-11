@@ -102,28 +102,42 @@ $(document).ready(function() {
 		var found = radio.get(i);
 		if (medSelected == found.value){
 			$(found).prop("checked", true);
-		}	
+		} else {
+			$(found).prop("checked", false);
+		}
 	}
+	
+	medsTable.on('click', 'input', function(e){
+		var radio = medsTable.$('input[type="radio"]');
+		for (var i=0; i<radio.length; i++) {
+			if(radio.get(i).checked){
+				var found = radio.get(i);
+				if (this.value != found.value){
+					radio.prop("checked", false);
+				}	
+			}
+		}
+	});
 	
 	$("form").on('submit', function(e){
 		   var $form = $(this);
 			
 			// Iterate over all checkboxes in the table
 		   medsTable.$('input[type="radio"]').each(function(){
-		      // If checkbox doesn't exist in DOM
-		      if(!$.contains(document, this)){
-		         // If checkbox is checked
-		         if(this.checked){
-		            // Create a hidden element 
-		            $form.append(
-		               $('<input>')
-		                  .attr('type', 'hidden')
-		                  .attr('name', this.name)
-		                  .val(this.value)
-		            );
-		         }
-		      } 
-		   });
+			      // If checkbox doesn't exist in DOM
+			      if(!$.contains(document, this)){
+			         // If checkbox is checked
+			         if(this.checked){
+			            // Create a hidden element 
+			            $form.append(
+			               $('<input>')
+			                  .attr('type', 'hidden')
+			                  .attr('name', this.name)
+			                  .val(this.value)
+			            );
+			         }
+			      } 
+			   });
 	});
 	
 });

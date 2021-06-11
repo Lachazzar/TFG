@@ -3,7 +3,6 @@ package es.udc.tfgproject.backend.model.entities.medicamentInformation;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,9 +60,9 @@ public class Medicament {
 	this.commercialMedicaments = commercialMedicaments;
     }
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
-    @JoinTable(name = "MedicamentChemicalComponent", joinColumns = {
-	    @JoinColumn(name = "medicamentId") }, inverseJoinColumns = { @JoinColumn(name = "componentId") })
+    @ManyToMany
+    @JoinTable(name = "Medicament_ChemicalComponent", joinColumns = {
+	    @JoinColumn(name = "medicament_id") }, inverseJoinColumns = { @JoinColumn(name = "component_id") })
     public Set<ChemicalComponent> getChemicalComponents() {
 	return chemicalComponents;
     }
