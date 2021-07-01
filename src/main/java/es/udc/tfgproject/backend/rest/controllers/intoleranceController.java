@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.udc.tfgproject.backend.model.services.ListService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.IntoleranceDto;
 
 @Transactional
@@ -24,9 +25,17 @@ public class intoleranceController {
 
     @Autowired
     private ListService listService;
+    @Autowired
+    private SecService secService;
 
     @GetMapping("")
     public String intolerances(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<IntoleranceDto> intolerancesList = listService.listAllIntolerancesDto();
 
 	model.addAttribute("intolerances", intolerancesList);
@@ -36,6 +45,12 @@ public class intoleranceController {
 
     @GetMapping("/eliminar/{code}")
     public String deleteIntolerance(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<IntoleranceDto> intolerancesList = listService.listAllIntolerancesDto();
 
 	listService.deleteIntoleranceByCode(intolerancesList, code);
@@ -51,6 +66,11 @@ public class intoleranceController {
 
     @GetMapping("/editar/{code}")
     public String editIntolerance(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	IntoleranceDto intolerance = listService.getIntoleranceByCode(code);
 
@@ -70,6 +90,11 @@ public class intoleranceController {
 
     @GetMapping("/nuevo")
     public String newIntolerance(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	model.addAttribute("title", "Nueva Intolerancia");
 
@@ -82,6 +107,12 @@ public class intoleranceController {
     @PostMapping("/guardar")
     public String saveIntolerance(@ModelAttribute("intolerance") IntoleranceDto intoleranceDto,
 	    @RequestParam(value = "oldIntoleranceName", required = false) String oldIntoleranceName, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	Boolean hasError = listService.checkAndSaveIntolerance(oldIntoleranceName, intoleranceDto.getIntoleranceName());
 

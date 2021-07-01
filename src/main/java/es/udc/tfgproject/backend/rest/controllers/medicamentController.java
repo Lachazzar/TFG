@@ -15,19 +15,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.udc.tfgproject.backend.model.services.ListService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentDto;
 import es.udc.tfgproject.backend.rest.dtos.MedicamentExtendedDto;
 
 @Transactional
 @ControllerAdvice
-@RequestMapping("/administracion/medicamentos")
+@RequestMapping("/administracion/formulas")
 public class medicamentController {
 
     @Autowired
     private ListService listService;
+    @Autowired
+    private SecService secService;
 
     @GetMapping("")
     public String medicaments(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<MedicamentExtendedDto> medicamentList = listService.listAllMedicamentsExtendedDto();
 
 	model.addAttribute("medicaments", medicamentList);
@@ -37,6 +46,12 @@ public class medicamentController {
 
     @GetMapping("/eliminar/{code}")
     public String deleteComponent(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<MedicamentExtendedDto> medicamentList = listService.listAllMedicamentsExtendedDto();
 
 	listService.deleteMedicamentByCode(medicamentList, code);
@@ -52,15 +67,20 @@ public class medicamentController {
 
     @GetMapping("/editar/{code}")
     public String editComponent(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	MedicamentExtendedDto medicament = listService.getMedicamentByCode(code);
 
 	if (medicament.getMedicamentName() == null || medicament.getMedicamentName() == "") {
-	    model.addAttribute("title", "Nuevo medicamento");
-	    model.addAttribute("err", "No se ha encontrado el medicamento, si guarda se insertará uno nuevo");
+	    model.addAttribute("title", "Nueva Fórmula");
+	    model.addAttribute("err", "No se ha encontrado la fórmula, si guarda se insertará uno nuevo");
 	    return "admin/medicamentDetails";
 	} else {
-	    model.addAttribute("title", "Detalle medicamento");
+	    model.addAttribute("title", "Detalle Fórmula");
 	    model.addAttribute("oldMedicamentName", medicament.getMedicamentName());
 	    model.addAttribute("code", code);
 	}
@@ -75,8 +95,13 @@ public class medicamentController {
 
     @GetMapping("/nuevo")
     public String newComponent(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
 
-	model.addAttribute("title", "Nuevo medicamento");
+	if (!security) {
+	    return "forbidden";
+	}
+
+	model.addAttribute("title", "Nueva Fórmula");
 
 	MedicamentExtendedDto medicament = new MedicamentExtendedDto();
 	model.addAttribute("medicament", medicament);
@@ -94,6 +119,12 @@ public class medicamentController {
 	    @RequestParam(value = "code", required = false) String code,
 	    @RequestParam(value = "componentsL", required = false) String[] componentsL, Model model) {
 
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	Boolean hasError = listService.checkAndSaveMedicament(oldMedicamentName, medicamentDto.getMedicamentName(),
 		componentsL);
 
@@ -101,12 +132,12 @@ public class medicamentController {
 	    ArrayList<ChemicalComponentDto> chemicalComponentsList = listService.listAllChemicalComponentsDto();
 
 	    model.addAttribute("components", chemicalComponentsList);
-	    model.addAttribute("err", "Ya existe un medicamento con ese nombre");
+	    model.addAttribute("err", "Ya existe una fórmula con ese nombre");
 	    MedicamentExtendedDto medicament = new MedicamentExtendedDto();
 	    if (oldMedicamentName == "") {
-		model.addAttribute("title", "Nuevo Medicamento");
+		model.addAttribute("title", "Nueva Fórmula");
 	    } else {
-		model.addAttribute("title", "Detalle Medicamento");
+		model.addAttribute("title", "Detalle Fórmula");
 		medicament = listService.getMedicamentByCode(code);
 		model.addAttribute("medicament", medicament);
 		model.addAttribute("oldMedicamentName", oldMedicamentName);

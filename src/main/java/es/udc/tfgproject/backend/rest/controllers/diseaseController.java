@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.udc.tfgproject.backend.model.services.ListService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
 
 @Transactional
@@ -24,9 +25,16 @@ public class diseaseController {
 
     @Autowired
     private ListService listService;
+    @Autowired
+    private SecService secService;
 
     @GetMapping("")
     public String diseases(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 	ArrayList<DiseaseDto> diseasesList = listService.listAllDiseasesDto();
 
 	model.addAttribute("diseases", diseasesList);
@@ -36,6 +44,11 @@ public class diseaseController {
 
     @GetMapping("/eliminar/{code}")
     public String deleteDisease(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 	ArrayList<DiseaseDto> diseasesList = listService.listAllDiseasesDto();
 
 	listService.deleteDiseaseByCode(diseasesList, code);
@@ -51,6 +64,12 @@ public class diseaseController {
 
     @GetMapping("/editar/{code}")
     public String editDisease(@PathVariable("code") String code, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	DiseaseDto disease = listService.getDiseaseByCode(code);
 
@@ -70,6 +89,11 @@ public class diseaseController {
 
     @GetMapping("/nuevo")
     public String newDisease(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	model.addAttribute("title", "Nueva Enfermedad");
 
@@ -82,6 +106,11 @@ public class diseaseController {
     @PostMapping("/guardar")
     public String saveDisease(@ModelAttribute("disease") DiseaseDto diseaseDto,
 	    @RequestParam(value = "oldDiseaseName", required = false) String oldDiseaseName, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	Boolean hasError = listService.checkAndSaveDisease(oldDiseaseName, diseaseDto.getDiseaseName());
 

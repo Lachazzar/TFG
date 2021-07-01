@@ -14,7 +14,7 @@
 	<div class="div1">
 		<h1>Historial Médico</h1>
 	</div>
-	<div sec:authorize="hasRole('USER')">
+	<div sec:authorize="hasRole('MEDIC')">
 		<div class="divdni">
 			<form action="#" th:action="@{/medical/historyFormJsonLoad}" th:object="${dni}" method="post">
 				<div class="row" style="width: 100%">

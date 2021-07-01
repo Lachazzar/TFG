@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.udc.tfgproject.backend.model.services.ListService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.AllergyDto;
 
 @Transactional
@@ -25,8 +26,18 @@ public class allergyController {
     @Autowired
     private ListService listService;
 
+    @Autowired
+    private SecService secService;
+
     @GetMapping("")
     public String allergies(Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<AllergyDto> allergiesList = listService.listAllAllergiesDto();
 
 	model.addAttribute("allergies", allergiesList);
@@ -36,6 +47,13 @@ public class allergyController {
 
     @GetMapping("/eliminar/{code}")
     public String deleteAllergy(@PathVariable("code") String code, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<AllergyDto> allergiesList = listService.listAllAllergiesDto();
 
 	listService.deleteAllergyByCode(allergiesList, code);
@@ -51,6 +69,12 @@ public class allergyController {
 
     @GetMapping("/editar/{code}")
     public String editAllergy(@PathVariable("code") String code, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	AllergyDto allergy = listService.getAllergyByCode(code);
 
@@ -71,6 +95,12 @@ public class allergyController {
     @GetMapping("/nuevo")
     public String newAllergy(Model model) {
 
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	model.addAttribute("title", "Nueva Alergia");
 
 	AllergyDto allergy = new AllergyDto();
@@ -82,6 +112,12 @@ public class allergyController {
     @PostMapping("/guardar")
     public String saveAllergy(@ModelAttribute("allergy") AllergyDto allergyDto,
 	    @RequestParam(value = "oldAllergyName", required = false) String oldAllergyName, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	Boolean hasError = listService.checkAndSaveAllergy(oldAllergyName, allergyDto.getAllergyName());
 

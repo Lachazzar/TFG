@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class UserBD {
 
     public enum RoleType {
-	USER, ADMIN
+	GUEST, MEDIC, ADMIN
     };
 
     private Long id;

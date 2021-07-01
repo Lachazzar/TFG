@@ -411,9 +411,11 @@ INSERT INTO ChemicalComponent_Intolerance(chemicalComponent_id, intolerance_id)
 -- INSERT INTO UserBD(userName, password, firstName, lastName, email, role)
 -- VALUES ();
 INSERT INTO UserBD(userName, password, email, role)
-  VALUES("admin", "{bcrypt}$2a$10$AVaWqpSEsBYP0r3/brOAXOZua5/qxe/5xQiJzmdAcNoJRm/zDkMAS", "email@email", 1);
+  VALUES("admin", "{bcrypt}$2a$10$AVaWqpSEsBYP0r3/brOAXOZua5/qxe/5xQiJzmdAcNoJRm/zDkMAS", "email@email", 2);
 
 INSERT INTO UserBD(userName, password, email, role)
-  VALUES("user", "{bcrypt}$2a$10$.h2M1DzrEHo.ONO54jDsOeCLQwPNeN5aEa6F/dX5pnu6T88hoA2jG", "email@email", 0);
+  VALUES("medic", "{bcrypt}$2a$10$DYKl4.nyHuZax34inqMA0u2pFahGUYtwf0bOvk/dWjhUWmsLeoEC6", "email@email", 1);
 
+INSERT INTO UserBD(userName, password, email, role)
+  VALUES("guest", "{bcrypt}$2a$10$xf/KyeKFfqPubkWsPnzgIeXgfIctmKEKVH1MdpI2PqBaAm2kMZ65W", "email@email", 0);
 

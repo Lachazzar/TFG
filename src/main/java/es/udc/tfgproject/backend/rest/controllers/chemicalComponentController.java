@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import es.udc.tfgproject.backend.model.entities.restrictions.RegularRestriction;
 import es.udc.tfgproject.backend.model.services.ListService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.AllergyDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentCompleteDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentDto;
@@ -31,9 +32,18 @@ public class chemicalComponentController {
 
     @Autowired
     private ListService listService;
+    @Autowired
+    private SecService secService;
 
     @GetMapping("")
     public String chemicalComponents(Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<ChemicalComponentCompleteDto> chemicalComponentList = listService
 		.listAllChemicalComponentsCompleteDto();
 
@@ -44,6 +54,12 @@ public class chemicalComponentController {
 
     @GetMapping("/eliminar/{code}")
     public String deleteComponent(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<ChemicalComponentCompleteDto> chemicalComponentList = listService
 		.listAllChemicalComponentsCompleteDto();
 
@@ -60,6 +76,11 @@ public class chemicalComponentController {
 
     @GetMapping("/editar/{code}")
     public String editComponent(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	ChemicalComponentCompleteDto component = listService.getChemicalComponentByCode(code);
 
@@ -95,6 +116,11 @@ public class chemicalComponentController {
 
     @GetMapping("/nuevo")
     public String newComponent(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	model.addAttribute("title", "Nuevo componente");
 
@@ -128,6 +154,11 @@ public class chemicalComponentController {
 	    @RequestParam(value = "diseasesL", required = false) String[] diseasesL,
 	    @RequestParam(value = "rRestrictionsL", required = false) String[] rRestrictionsL,
 	    @RequestParam(value = "family", required = false) String family, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	Boolean hasError = listService.checkAndSaveChemicalComponent(oldComponentName, componentDto.getComponentName(),
 		family, componentsL, intolerancesL, allergiesL, diseasesL, rRestrictionsL);

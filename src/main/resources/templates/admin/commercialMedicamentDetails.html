@@ -14,7 +14,7 @@
 	<div class="div1">
 		<h1 th:text=${title}></h1>
 	</div>
-	<form action="#" th:action="@{/administracion/medicamentosComerciales/guardar}" th:object="${medicament}" method="post">
+	<form action="#" th:action="@{/administracion/medicamentos/guardar}" th:object="${medicament}" method="post">
 		<div class="div1">
 			<div th:if="${err}!= null">
 				<p th:text=${err}></p>
@@ -31,7 +31,7 @@
 		</div>
 		<div style="float: left; width: 100%">
 	       	<div style="float: left; width: 50%;">
-	       		<h2 align="center">Medicamento genérico</h2>
+	       		<h2 align="center">Fórmula</h2>
 	    			<div class="divtable2">
 		            <table id="medsTable" class="center">
 		                <thead>

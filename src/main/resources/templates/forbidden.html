@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Access denied</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/home.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<nav>
+		<div th:insert="fragments/menu">
+		</div>
+	</nav>
+	<div class="row" style="float: left; width: 90%; margin: 3% 0% 0% 3%;">
+		<div class="divBorder2" >
+			<p><b>Acceso denegado:</b> El rol de su cuenta no permite el uso de esta funcionalidad.</p>
+		</div>
+	</div>
+</body>
+</html>

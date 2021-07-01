@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.udc.tfgproject.backend.model.services.ListService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.FamilyDto;
 
 @Transactional
@@ -24,9 +25,17 @@ public class familyController {
 
     @Autowired
     private ListService listService;
+    @Autowired
+    private SecService secService;
 
     @GetMapping("")
     public String families(Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<FamilyDto> familiesList = listService.listAllFamiliesDto();
 
 	model.addAttribute("families", familiesList);
@@ -36,6 +45,12 @@ public class familyController {
 
     @GetMapping("/eliminar/{code}")
     public String deleteFamily(@PathVariable("code") String code, Model model) {
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	ArrayList<FamilyDto> familiesList = listService.listAllFamiliesDto();
 
 	listService.deleteFamilyByCode(familiesList, code);
@@ -51,6 +66,12 @@ public class familyController {
 
     @GetMapping("/editar/{code}")
     public String editFamily(@PathVariable("code") String code, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	FamilyDto family = listService.getFamilyByCode(code);
 
@@ -71,6 +92,12 @@ public class familyController {
     @GetMapping("/nuevo")
     public String newFamily(Model model) {
 
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
+
 	model.addAttribute("title", "Nueva Familia");
 
 	FamilyDto family = new FamilyDto();
@@ -82,6 +109,12 @@ public class familyController {
     @PostMapping("/guardar")
     public String saveFamily(@ModelAttribute("family") FamilyDto familyDto,
 	    @RequestParam(value = "oldFamilyName", required = false) String oldFamilyName, Model model) {
+
+	boolean security = secService.checkSecurity("ROLE_ADMIN");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	Boolean hasError = listService.checkAndSaveFamily(oldFamilyName, familyDto.getFamilyName());
 

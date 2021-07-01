@@ -32,10 +32,15 @@ public class UserServiceImpl implements UserDetailsService {
 	ArrayList<GrantedAuthority> roles = new ArrayList<>();
 	if (user.getRole() == RoleType.ADMIN) {
 	    roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-	    roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+	    roles.add(new SimpleGrantedAuthority("ROLE_MEDIC"));
+	    roles.add(new SimpleGrantedAuthority("ROLE_GUEST"));
 	}
-	if (user.getRole() == RoleType.USER) {
-	    roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+	if (user.getRole() == RoleType.MEDIC) {
+	    roles.add(new SimpleGrantedAuthority("ROLE_MEDIC"));
+	    roles.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+	}
+	if (user.getRole() == RoleType.GUEST) {
+	    roles.add(new SimpleGrantedAuthority("ROLE_GUEST"));
 	}
 
 	return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), roles);

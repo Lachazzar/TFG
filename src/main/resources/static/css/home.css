@@ -12,6 +12,17 @@ html{
 	margin: 0% 0% 0% 0%;
 }
 
+.divBorder2{
+	height: auto; 
+	overflow: auto; 
+	width: 47%;
+	padding: 1%;
+	border: 5px double #204a87;
+	background-color: white;
+	margin: 0% 0% 0% 0%;
+	font-size: 20px;
+}
+
 body{
 	background: url(/images/fondoHome2.jpg) no-repeat center top; 
 	background-position: 0px 0px;

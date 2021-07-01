@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-	<title>Medicamentos Comerciales</title>
+	<title>Medicamentos</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
 	 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" />
@@ -15,7 +15,7 @@
 		</div>
 	</nav>
 	<div class="div1">
-		<h1>Medicamentos Comerciales</h1>
+		<h1>Medicamentos</h1>
 	</div>
   	<div style="float: left; width: 100%">
   		<div class="divtable2">
@@ -31,7 +31,7 @@
                		<tr th:each="medicament : ${medicaments}">
                     	<td class="thadjusted">
                     		<div class="row">
-                    		<a th:href="@{'/administracion/medicamentosComerciales/eliminar/' + ${medicament.code}}">
+                    		<a th:href="@{'/administracion/medicamentos/eliminar/' + ${medicament.code}}">
                     			<img alt="Eliminar" src="/images/delete.png"
          						width="20" height="20" style="margin:5% 0% 0% 0%">
          					</a>
@@ -40,7 +40,7 @@
                     	</td>
                     	<td>
                     		<div class="row">
-                    			<a th:href="@{'/administracion/medicamentosComerciales/editar/' + ${medicament.code}}" th:text="${medicament.commercialMedicamentName}" style="color: white">
+                    			<a th:href="@{'/administracion/medicamentos/editar/' + ${medicament.code}}" th:text="${medicament.commercialMedicamentName}" style="color: white">
                     			</a>
                     		</div>
                     	</td>
@@ -77,7 +77,7 @@ $(document).ready(function() {
         'buttons': ['excel',  {
             text: 'Nuevo',
             action: function ( e, dt, node, config ) {
-            		window.location = 'http://localhost:8080/administracion/medicamentosComerciales/nuevo';
+            		window.location = 'http://localhost:8080/administracion/medicamentos/nuevo';
                 }
           	}
         ],

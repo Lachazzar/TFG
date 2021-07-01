@@ -28,6 +28,7 @@ import es.udc.tfgproject.backend.model.entities.patientInformation.Treatment;
 import es.udc.tfgproject.backend.model.exceptions.InstanceNotFoundException;
 import es.udc.tfgproject.backend.model.services.ListService;
 import es.udc.tfgproject.backend.model.services.MedicalService;
+import es.udc.tfgproject.backend.model.services.SecService;
 import es.udc.tfgproject.backend.rest.dtos.AllergyDto;
 import es.udc.tfgproject.backend.rest.dtos.ChemicalComponentDto;
 import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
@@ -48,6 +49,9 @@ public class medicalController {
 
     @Autowired
     private MedicalService medicalService;
+
+    @Autowired
+    private SecService secService;
 
     @GetMapping("/historyForm")
     public String index(Model model) {
@@ -166,6 +170,12 @@ public class medicalController {
 
     @PostMapping("/historyFormJsonLoad")
     public String jsonLoad(@ModelAttribute("dni") DniDto dni, Model model) throws URISyntaxException {
+
+	boolean security = secService.checkSecurity("ROLE_MEDIC");
+
+	if (!security) {
+	    return "forbidden";
+	}
 
 	List<Sexo> sexos = Arrays.asList(Sexo.values());
 
