@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<title th:text=${title}></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/css/forms.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<nav>
+		<div th:insert="fragments/menu">
+		</div>
+	</nav>
+	<div class="div1">
+		<h1 th:text=${title}></h1>
+	</div>
+	<form action="#" th:action="@{/administracion/usuarios/guardar}" th:object="${user}" method="post">
+		<div class="div1">
+			<div th:if="${err}!= null">
+				<p th:text=${err}></p>
+			</div>
+		</div>
+		<!-- OCULTOS -->
+		<input type="hidden" id="oldUserName" name="oldUserName" th:value="${oldUserName}"/>
+		<div class="row">
+			<div class="div2" style="float: left; width: 20%; margin: 0% 0% 0% 10%">
+				<label class="col-form-label-sm" for="userName">Nombre</label>
+	           	<input th:field="*{userName}" th:title="userName"
+	           	class="form-control form-control-sm" 
+	           	id="userName" type="text" required autofocus>
+			</div>
+		</div>
+		<p>
+		<div class="row">
+			<div class="div2" style="float: left; width: 20%; margin: 0% 0% 0% 10%">
+				<label class="col-form-label-sm" for="email">Email</label>
+	           	<input th:field="*{email}" th:title="email"
+	           	class="form-control form-control-sm" 
+	           	id="email" type="text" required>
+			</div>
+		</div>
+		<p>
+		<div class="row">
+			<div class="div2" style="float: left; width: 20%; margin: 0% 0% 0% 10%">
+				<label class="col-form-label-sm" for="password">Contraseña (No rellenar si no se precisa cambio de contraseña)</label>
+	           	<input th:field="*{password}" th:title="password"
+	           	class="form-control form-control-sm" 
+	           	id="password" type="text" required>
+			</div>
+		</div>
+		<p>
+		<div class="row">
+			<div class="div2" style="float: left; width: 20%; margin: 0% 0% 0% 10%">
+				<label class="col-form-label-sm" for="nombre">Rol</label>
+	           	<div style="margin: 0% 0% 0% 15%;" th:each="roleE : ${roles}">
+		  			<input type="radio" th:field="*{role}" th:value="${roleE}" required/><label for="roleE" th:text="| &nbsp; ${roleE} |"></label>
+				</div>
+			</div>
+		</div>
+		<div style="float: left; width: 100%">
+			<div class="divbutton">
+				<button type="submit" class="myButton">Guardar</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>

@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.udc.tfgproject.backend.model.entities.UserBD;
+import es.udc.tfgproject.backend.model.entities.UserBD.RoleType;
+import es.udc.tfgproject.backend.model.entities.UserDao;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Allergy;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.AllergyDao;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Disease;
@@ -34,6 +38,7 @@ import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
 import es.udc.tfgproject.backend.rest.dtos.FamilyDto;
 import es.udc.tfgproject.backend.rest.dtos.IntoleranceDto;
 import es.udc.tfgproject.backend.rest.dtos.MedicamentExtendedDto;
+import es.udc.tfgproject.backend.rest.dtos.UserDto;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,6 +67,9 @@ public class ListServiceImpl implements ListService {
 
     @Autowired
     private RegularRestrictionDao regularRestrictionDao;
+
+    @Autowired
+    private UserDao userDao;
 
     // LISTAS
 
@@ -260,6 +268,120 @@ public class ListServiceImpl implements ListService {
 	    rRestrictions.add(a);
 	});
 	return rRestrictions;
+    }
+
+    @Override
+    public List<UserBD> listAllUsers() {
+	List<UserBD> users = new ArrayList<UserBD>();
+	userDao.findAll().forEach(a -> {
+	    users.add(a);
+	});
+	return users;
+    }
+
+    @Override
+    public ArrayList<UserDto> listAllUsersDto() {
+	ArrayList<UserDto> usersList = new ArrayList<UserDto>();
+	listAllUsers().forEach(d -> {
+	    UserDto user = new UserDto(d.getUserName(), d.getEmail(), d.getRole());
+	    usersList.add(user);
+	});
+	return usersList;
+    }
+
+    // USERS
+
+    @Override
+    public UserBD saveUser(UserBD user) {
+	return userDao.saveAndFlush(user);
+    }
+
+    @Override
+    public void deleteUser(UserBD user) {
+	userDao.deleteById(user.getId());
+    }
+
+    @Override
+    public UserBD getUser(String userName) {
+	return userDao.findByUserName(userName).get();
+    }
+
+    @Override
+    public void deleteUserByUserName(ArrayList<UserDto> userList, String userName) {
+	userList.forEach(d -> {
+	    if (d.getUserName().contentEquals(userName)) {
+		UserBD userRemove = getUser(d.getUserName());
+		deleteUser(userRemove);
+	    }
+	});
+
+    }
+
+    @Override
+    public UserDto getUserDtoByUserName(String userName) {
+	ArrayList<UserDto> usersList = listAllUsersDto();
+	UserDto userFind = new UserDto();
+	usersList.forEach(d -> {
+	    if (d.getUserName().contentEquals(userName)) {
+		userFind.setUserName(d.getUserName());
+		userFind.setEmail(d.getEmail());
+		userFind.setRole(d.getRole());
+		userFind.setPassword(d.getPassword());
+	    }
+	});
+	return userFind;
+    }
+
+    @Override
+    public Boolean checkAndSaveUser(String oldUserName, String userName, String password, String email, RoleType role) {
+	UserBD userSave;
+	Boolean hasError = false;
+
+	if (oldUserName == "" || oldUserName == null) {
+	    for (UserBD d : listAllUsers()) {
+		if (d.getUserName().equals(userName)) {
+		    hasError = true;
+		}
+	    }
+	    if (hasError == false) {
+		userSave = new UserBD();
+		userSave.setUserName(userName);
+		userSave.setEmail(email);
+		String encPassword = "{bcrypt}" + encryptPassword(password);
+		userSave.setPassword(encPassword);
+		userSave.setRole(role);
+		userSave = saveUser(userSave);
+	    }
+	} else {
+	    if (!oldUserName.equals(userName)) {
+		for (UserBD d : listAllUsers()) {
+		    if (d.getUserName().equals(userName)) {
+			hasError = true;
+		    }
+		}
+		if (hasError == false) {
+		    userSave = getUser(oldUserName);
+		    userSave.setUserName(userName);
+		    userSave.setEmail(email);
+		    if (password != null && password != "") {
+			String encPassword = "{bcrypt}" + encryptPassword(password);
+			userSave.setPassword(encPassword);
+		    }
+		    userSave.setRole(role);
+		    userSave = saveUser(userSave);
+		}
+	    } else {
+		userSave = getUser(userName);
+		userSave.setEmail(email);
+		userSave.setRole(role);
+		if (password != null && password != "") {
+		    String encPassword = "{bcrypt}" + encryptPassword(password);
+		    userSave.setPassword(encPassword);
+		}
+		userSave = saveUser(userSave);
+	    }
+	}
+	return hasError;
     }
 
     // ALERGIAS
@@ -945,6 +1067,11 @@ public class ListServiceImpl implements ListService {
 
 	Set<ChemicalComponent> componentsSet = new HashSet<>(componentsList);
 	return componentsSet;
+    }
+
+    public static String encryptPassword(String password) {
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	return encoder.encode(password);
     }
 
 }

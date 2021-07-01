@@ -3,6 +3,8 @@ package es.udc.tfgproject.backend.model.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.udc.tfgproject.backend.model.entities.UserBD;
+import es.udc.tfgproject.backend.model.entities.UserBD.RoleType;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Allergy;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Disease;
 import es.udc.tfgproject.backend.model.entities.disease_intolerance_allergy.Intolerance;
@@ -19,6 +21,7 @@ import es.udc.tfgproject.backend.rest.dtos.DiseaseDto;
 import es.udc.tfgproject.backend.rest.dtos.FamilyDto;
 import es.udc.tfgproject.backend.rest.dtos.IntoleranceDto;
 import es.udc.tfgproject.backend.rest.dtos.MedicamentExtendedDto;
+import es.udc.tfgproject.backend.rest.dtos.UserDto;
 
 public interface ListService {
 
@@ -56,6 +59,10 @@ public interface ListService {
     ArrayList<FamilyDto> listAllFamiliesDto();
 
     List<RegularRestriction> listAllRegularRestrictions();
+
+    List<UserBD> listAllUsers();
+
+    ArrayList<UserDto> listAllUsersDto();
 
     // ALERGIAS
     Allergy saveAllergy(Allergy allergy);
@@ -150,5 +157,18 @@ public interface ListService {
     MedicamentExtendedDto getMedicamentByCode(String code);
 
     Boolean checkAndSaveMedicament(String oldMedicamentName, String medicamentName, String[] componentsL);
+
+    // MEDICAMENTOS
+    UserBD saveUser(UserBD user);
+
+    void deleteUser(UserBD user);
+
+    UserBD getUser(String userName);
+
+    void deleteUserByUserName(ArrayList<UserDto> userList, String userName);
+
+    UserDto getUserDtoByUserName(String userName);
+
+    Boolean checkAndSaveUser(String oldUserName, String userName, String password, String email, RoleType role);
 
 }

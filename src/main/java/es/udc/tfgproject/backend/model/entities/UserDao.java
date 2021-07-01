@@ -2,12 +2,12 @@ package es.udc.tfgproject.backend.model.entities;
 
 import java.util.Optional;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserDao extends PagingAndSortingRepository<UserBD, Long> {
-	
-	boolean existsByUserName(String userName);
+public interface UserDao extends JpaRepository<UserBD, Long> {
 
-	Optional<UserBD> findByUserName(String userName);
-	
+    boolean existsByUserName(String userName);
+
+    Optional<UserBD> findByUserName(String userName);
+
 }
